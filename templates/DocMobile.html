@@ -1,0 +1,74 @@
+{%extends 'Navbar.html'%}
+
+{% block title %}Documentation Mobile{% endblock  %}
+
+{%block content%}
+<div class="col-lg-12 side-right stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+          <h4 class="card-title mb-0">Ajouter Document</h4>
+       
+        </div>
+        <div class="wrapper">
+          <hr>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info">
+              <form action="#">
+                <div class="form-group">
+                  <label for="Region">Region</label>
+                  <select id="Region" name="Region" class="form-control">
+                    <option>Select Région</option>
+                    <option>America</option>
+                    <option>Italy</option>
+                    <option>Russia</option>
+                    <option>Britain</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="Délegation">Délegation</label>
+                  <select id="Délegation" name="Délegation" class="form-control">
+                    <option>Select Délegation</option>
+                    <option>America</option>
+                    <option>Italy</option>
+                    <option>Russia</option>
+                    <option>Britain</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="Site_Name">Site_Name</label>
+                  <select id="Site_Name" name="Site_Name" class="form-control">
+                    <option>Select Name</option>
+                    <option>America</option>
+                    <option>Italy</option>
+                    <option>Russia</option>
+                    <option>Britain</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="Documentation">Type Documentation</label>
+                  <select id="Documentation" name="Documentation" class="form-control">
+                    <option>Select Type</option>
+                    <option>America</option>
+                    <option>Italy</option>
+                    <option>Russia</option>
+                    <option>Britain</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                    <label for="formFile">Documentation</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
+
+                <button  type="submit" class="btn btn-outline-success col-12">Ajouter</button>
+                
+              </form>
+            </div><!-- tab content ends -->
+          
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

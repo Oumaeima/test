@@ -1,0 +1,159 @@
+{%extends 'Navbar.html'%}
+<link href="{{url_for('static', filename = 'styles/css/style.css')}}" rel="stylesheet">
+
+{% block title %}Acces Mobile{% endblock  %}
+
+{%block content%}
+<div class="row">
+            
+            
+  <div class="col-12 grid-margin">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Ajouter Réseau Cellulaire</h4>
+        <form class="form-sample" method="post" action="{{url_for('addCellule')}}">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="site_Name" class="col-sm-3 col-form-label">Site_id</label>
+                <div class="col-sm-9">
+                  <input id="Name" name="Name" type="text" class="form-control"/>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="Name" class="col-sm-3 col-form-label">Cellule_Name</label>
+                <div class="col-sm-9">
+                  <input id="Name" name="Name" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="Azimuth" class="col-sm-3 col-form-label">Azimuth</label>
+                <div class="col-sm-9">
+                  <input id="Azimuth" name="Azimuth" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="Power" class="col-sm-3 col-form-label">Power</label>
+                <div class="col-sm-9">
+                  <input id="Power" name="Power"  type="text" class="form-control"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="Technologie" class="col-sm-3 col-form-label">Technologie</label>
+                <div class="col-sm-9">
+                  <select id="Technologie" name="Technologie" class="form-control">
+                    <option>4G</option>
+                    <option>3G</option>
+                    <option>2G</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="RNC" class="col-sm-3 col-form-label">RNC</label>
+                <div class="col-sm-9">
+                  <input id="RNC" name="RNC" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="ICH" class="col-sm-3 col-form-label">ICH</label>
+                <div class="col-sm-9">
+                  <input id="ICH" name="ICH" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="Delegation" class="col-sm-3 col-form-label">Delegation</label>
+                <div class="col-sm-9">
+                  <select id="Delegation" name="Delegation" class="form-control">
+                    <option>Select Site Name</option>
+                    {% for i in listDelegation %}
+                      <option value="{{i[2]}}"> {{i[2]}} </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="Region" class="col-sm-3 col-form-label">Region</label>
+                <div class="col-sm-9">
+
+                  <select id="Region" name="Region" class="form-control">
+                    <option>Select Region</option>
+                    {% for i in Region %}
+                      <option value="{{i[1]}}"> {{i[1]}} </option>
+                    {% endfor %}
+                    
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="Antene" class="col-sm-3 col-form-label">Antene</label>
+                <div class="col-sm-9">
+                  <input id="Antene" name="Antene" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="BSC" class="col-sm-3 col-form-label">BSC</label>
+                <div class="col-sm-9">
+                  <input id="BSC" name="BSC" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="RCCH" class="col-sm-3 col-form-label">RCCH</label>
+                <div class="col-sm-9">
+                  <input id="RCCH" name="RCCH" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label for="LAC" class="col-sm-3 col-form-label">LAC</label>
+                <div class="col-sm-9">
+                  <input id="LAC" name="LAC" type="text" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-outline-success col-12">Valider</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
