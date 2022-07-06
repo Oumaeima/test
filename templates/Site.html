@@ -33,8 +33,8 @@
                 <label for="Accés" class="col-sm-3 col-form-label">Accés</label>
                 <div class="col-sm-9">
                   <select id="Accés" name="Accés" class="form-control">
-                    <option>Fibre optique</option>
-                    <option>Female</option>
+                    <option>Fibre</option>
+                    <option>LS</option>
                   </select>
                 </div>
               </div>
@@ -43,7 +43,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <label for="Date_Service" class="col-sm-3 col-form-label">Date en Service</label>
+                <label for="Date_Service" class="col-sm-3 col-form-label">Date mise en Service</label>
                 <div class="col-sm-9">
                   <input id="Date_Service" name="Date_Service"  type="date" class="form-control" placeholder="dd/mm/yyyy"/>
                 </div>
@@ -54,10 +54,8 @@
                 <label for="Type_Station" class="col-sm-3 col-form-label">Type Station</label>
                 <div class="col-sm-9">
                   <select id="Type_Station" name="Type_Station" class="form-control">
-                    <option>Category1</option>
-                    <option>Category2</option>
-                    <option>Category3</option>
-                    <option>Category4</option>
+                    <option>MAT</option>
+                    <option>Pylone</option>
                   </select>
                 </div>
               </div>
@@ -124,10 +122,10 @@
                 <label for="Region" class="col-sm-3 col-form-label">Région</label>
                 <div class="col-sm-9">
                   <select id="Region" name="Region" class="form-control">
-                    <option>America</option>
-                    <option>Italy</option>
-                    <option>Russia</option>
-                    <option>Britain</option>
+                    <option>Select Region</option>
+                    {% for i in Region %}
+                      <option value="{{i[1]}}"> {{i[1]}} </option>
+                    {% endfor %}
                   </select>
                 </div>
               </div>
@@ -136,11 +134,11 @@
               <div class="form-group row">
                 <label for="Deligation" class="col-sm-3 col-form-label">Déligation</label>
                 <div class="col-sm-9">
-                  <select id="Deligation" name="Deligation" class="form-control">
-                    <option>America</option>
-                    <option>Italy</option>
-                    <option>Russia</option>
-                    <option>Britain</option>
+                  <select id="Delegation" name="Delegation" class="form-control">
+                    <option>Select Delegation</option>
+                    {% for i in listDelegation %}
+                      <option value="{{i[2]}}"> {{i[2]}} </option>
+                    {% endfor %}
                   </select>
                 </div>
               </div>
@@ -158,10 +156,7 @@
               </div>
             </div>
           </div>
-          <button style="margin-left : 150px" type="submit" class="btn btn-outline-success col-4">Ajouter</button>
-         <a href="{{url_for('addCellule')}}">
-          <button type="button" class="btn btn-outline-secondary col-4">Créer Cellule</button>
-         </a>
+          <button type="submit" class="btn btn-outline-success col-12">Ajouter</button>
         </form>
       </div>
     </div>

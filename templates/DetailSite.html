@@ -1,0 +1,169 @@
+{%extends 'Navbar.html'%}
+
+{% block title %}Accés Mobile{% endblock  %}
+
+
+
+{%block content%}
+<div class="col-lg-12 side-right stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+          <h4 class="card-title mb-0">Configuration Accés Mobile</h4>
+        </div>
+        <div class="wrapper">
+          <hr>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info">
+                <div style="overflow-x:auto;">
+                    <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Site_id</th>
+                                <th scope="col">Cellule_Name</th>
+                                <th scope="col">Azimuth</th>
+                                <th scope="col">Bande</th>
+                                <th scope="col">Technologie</th>
+                                <th scope="col">RNC</th>
+                                <th scope="col">TCH</th>
+                                <th scope="col">Delegation</th>
+                                <th scope="col">Region</th>
+                                <th scope="col">Antene</th>
+                                <th scope="col">BSC</th>
+                                <th scope="col">BCH</th>
+                                <th scope="col">LAC</th>
+                                <th scope="col">Action</th>
+                            
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            {% for data in id %}
+                            <tr>
+                                <th scope="row"> {{ data.0 }} </th>
+                                <td> {{ data.1 }} </td>
+                                <td> {{ data.9 }} </td>
+                                <td> {{ data.2 }} </td>
+                                <td> {{ data.3 }} </td>
+                                <td> {{ data.4 }} </td>
+                                <td> {{ data.5 }} </td>
+                                <td> {{ data.6 }} </td>
+                                <td> {{ data.7 }} </td>
+                                <td> {{ data.8 }} </td>
+                                <td> {{ data.10 }} </td>
+                                <td> {{ data.11 }} </td>
+                                <td> {{ data.12 }} </td>
+                                <td> {{ data.13 }} </td>
+                                <td> 
+                                    <a href="/edit_cel/{{data.0}}" data-toggle="modal" data-target="#edit{{data.0}}">
+                                        <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                    </a>
+                                    <a href="/delete_cel/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                        <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                    </a>
+                                </td>
+                                
+                            </tr>
+                            <div class="modal fade" id="edit{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="ModalLabel">Update Cellule</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('editCellule', cel_id=data.0) }}" method="POST">
+                                        <div class="form-group">
+                                            <label for="Site_id" class="col-form-label">Site_id</label>
+                                            <input value="{{data.1}}" id="Site_id" name="Site_id" type="text" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name" class="col-form-label">Cellule_Name</label>
+                                            <input value="{{data.10}}" id="Name" name="Name" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="x" class="col-form-label">Azimuth</label>
+                                            <input value="{{data.2}}" id="Azimuth" name="Azimuth" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="y" class="col-form-label">Bande</label>
+                                            <input value="{{data.3}}" id="Bande" name="Bande"  type="text" class="form-control"/>
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="Capacité" class="col-form-label">Technologie</label>
+                                            <select id="Technologie" name="Technologie" class="form-control">
+                                                <option value="{{data.4}}">{{data.4}}</option>
+                                                <option value="4G">4G</option>
+                                                <option value="3G">3G</option>
+                                                <option value="2G">2G</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="paireO" class="col-form-label">RNC</label>
+                                            <input value="{{data.5}}" id="RNC" name="RNC" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="paireL" class="col-form-label">TCH</label>
+                                            <input value="{{data.6}}" id="TCH" name="TCH" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="rg_id" class="col-form-label">Delegation</label>
+                                            <select id="Delegation" name="Delegation" class="form-control">
+                                                <option value="{{data.7}}">{{data.7}}</option>
+                                                {% for i in listDelegation %}
+                                                    <option value="{{i[2]}}"> {{i[2]}} </option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="rg_id" class="col-form-label">Region</label>
+                                            <select id="Region" name="Region" class="form-control">
+                                                <option value="{{data.8}}">{{data.8}}</option>
+                                                {% for i in Region %}
+                                                    <option value="{{i[1]}}"> {{i[1]}} </option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="paireL" class="col-form-label">Antene</label>
+                                            <input value="{{data.10}}" id="Antene" name="Antene" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="paireL" class="col-form-label">BSC</label>
+                                            <input value="{{data.11}}"  id="BSC" name="BSC" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="paireL" class="col-form-label">BCH</label>
+                                            <input value="{{data.12}}" id="BCH" name="BCH" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                            <label for="paireL" class="col-form-label">LAC</label>
+                                            <input value="{{data.13}}" id="LAC" name="LAC" type="text" class="form-control" />
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Update</button>
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        
+                        </tbody>
+    
+    
+                    </table>
+    
+                </div>
+            </div><!-- tab content ends -->
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

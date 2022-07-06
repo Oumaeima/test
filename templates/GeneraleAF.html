@@ -1,0 +1,435 @@
+{%extends 'Navbar.html'%}
+
+{% block title %}Accés fixe{% endblock  %}
+
+{%block content%}
+<div class="col-lg-12 side-right stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+          <h4 class="card-title mb-0">Détails</h4>
+          <ul class="nav nav-tabs tab-solid tab-solid-primary mb-0" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-expanded="true">RG</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="avatar-tab" data-toggle="tab" href="#avatar" role="tab" aria-controls="avatar">SR</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="msan-tab" data-toggle="tab" href="#msan" role="tab" aria-controls="msan">MSAN</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security">PC</a>
+            </li>
+          </ul>
+        </div>
+        <div class="wrapper">
+          <hr>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info">
+               
+                <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">X</th>
+                            <th scope="col">Y</th>
+                            <th scope="col">Region</th>
+                            <th scope="col">Delegation</th>
+                            <th scope="col">Action</th>
+                        
+                        </tr>
+                    </thead>
+       
+                    <tbody>
+                        {% for data in listRG %}
+                        <tr>
+                            <th scope="row"> {{ data.0 }} </th>
+                            <td> {{ data.1 }} </td>
+                            <td> {{ data.2 }} </td>
+                            <td> {{ data.3 }} </td>
+                            <td> {{ data.4 }} </td>
+                            <td> {{ data.5 }} </td>
+                            <td> 
+                                
+                                <a href="/edit_repartition/{{data.0}}" data-toggle="modal" data-target="#exampleModal{{data.0}}">
+                                    <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                </a>
+                                <a href="/delete_repartition/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                    <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                </a>
+                        
+                            </td>
+                            
+                        </tr>
+
+                    <div class="modal fade" id="exampleModal{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="ModalLabel">Update Répartition</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form action="{{ url_for('editRepartition', rep_id=data.0) }}" method="POST">
+                                    <div class="form-group">
+                                      <label for="name" class="col-form-label">Name</label>
+                                      <input value="{{ data.1 }}" type="text" class="form-control" id="name" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="x" class="col-form-label">Mesure X</label>
+                                        <input value="{{ data.2 }}" type="text" class="form-control" id="x" name="x">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="y" class="col-form-label">Mesure Y</label>
+                                        <input value="{{ data.3 }}" type="text" class="form-control" id="y" name="y">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Region" class="col-form-label">Region</label>
+                                        <select id="Region" name="Region" class="form-control">
+                                            <option value="{{ data.4 }}"> {{ data.4 }} </option>
+                                          {% for i in Region %}
+                                            <option value="{{i[1]}}"> {{i[1]}} </option>
+                                          {% endfor %}
+                                        </select>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="Delegation" class="col-form-label">Delegation</label>
+                                        <select id="Delegation" name="Delegation" class="form-control">
+                                            <option value="{{ data.5 }}"> {{ data.5 }} </option>              
+                                          {% for i in listDelegation %}
+                                            <option value="{{i[2]}}"> {{i[2]}} </option>
+                                          {% endfor %}
+                                        </select>
+                                      </div>
+                                  
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="submit" class="btn btn-success">Update</button>
+                                  <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                              </div>
+                            </div>
+                    </div>
+
+
+                        {% endfor %}
+                    
+                    </tbody>
+      
+      
+                </table>
+            </div><!-- tab content ends -->
+            <div class="tab-pane fade" id="avatar" role="tabpanel" aria-labelledby="avatar-tab">
+                <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-striped table-sm" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">RG_ID</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">X</th>
+                            <th scope="col">Y</th>
+                            <th scope="col">Capacité</th>
+                            <th scope="col">Paire_O</th>
+                            <th scope="col">Paire_L</th>
+                            <th scope="col">Action</th>
+                        
+                        </tr>
+                    </thead>
+       
+                    <tbody>
+                        {% for data in listSR %}
+                        <tr>
+                            <th scope="row"> {{ data.0 }} </th>
+                            <td> {{ data.1 }} </td>
+                            <td> {{ data.2 }} </td>
+                            <td> {{ data.3 }} </td>
+                            <td> {{ data.4 }} </td>
+                            <td> {{ data.5 }} </td>
+                            <td> {{ data.6 }} </td>
+                            <td> {{ data.7 }} </td>
+                            <td> 
+                                <a href="/edit_sr/{{data.0}}" data-toggle="modal" data-target="#example{{data.0}}">
+                                    <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                </a>
+                                <a href="/delete_sr/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                    <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                </a>
+                            </td>
+                            
+                        </tr>
+                        <div class="modal fade" id="example{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="ModalLabel">Update Sous Répartition</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form action="{{ url_for('editSR', sr_id=data.0) }}" method="POST">
+                                    <div class="form-group">
+                                        <label for="rg_id" class="col-form-label">RG_ID</label>
+                                          <select id="rg_id" name="rg_id" class="form-control">
+                                            <option value="{{data.1}}">{{data.1}}</option>
+                                            {% for i in listRG %}
+                                              <option value="{{i[0]}}"> {{i[0]}} </option>
+                                            {% endfor %}
+                                          </select>
+                                      </div>
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label">Name</label>
+                                        <input value="{{data.2}}" type="text" class="form-control" id="name" name="name" placeholder="Nom SR">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="x" class="col-form-label">Mesure X</label>
+                                        <input value="{{data.3}}" type="text" class="form-control" id="x" name="x"  placeholder="Mesure X">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="y" class="col-form-label">Mesure Y</label>
+                                        <input value="{{data.4}}" type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="Capacité" class="col-form-label">Capacité</label>
+                                        <input value="{{data.5}}" type="text" class="form-control" id="Capacité" name="Capacité"  placeholder="Capacité">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="paireO" class="col-form-label">Paire Occupé</label>
+                                        <input value="{{data.6}}" type="text" class="form-control" id="paireO" name="paireO"  placeholder="Paire Occupé">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="paireL" class="col-form-label">Paire Libre</label>
+                                        <input value="{{data.7}}" type="text" class="form-control" id="paireL" name="paireL"  placeholder="Paire Occupé">
+                                      </div>
+                                   
+                                    
+                                      
+                                  
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="submit" class="btn btn-success">Update</button>
+                                  <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                              </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    
+                    </tbody>
+      
+      
+                </table>
+            </div>
+            <div class="tab-pane fade" id="msan" role="tabpanel" aria-labelledby="msan-tab">
+                <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-striped table-sm" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">RG_ID</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">X</th>
+                            <th scope="col">Y</th>
+                            <th scope="col">Nb_ports</th>
+                            <th scope="col">Paire_O</th>
+                            <th scope="col">Paire_L</th>
+                            <th scope="col">Action</th>
+                        
+                        </tr>
+                    </thead>
+       
+                    <tbody>
+                        {% for data in listMSAN %}
+                        <tr>
+                            <th scope="row"> {{ data.0 }} </th>
+                            <td> {{ data.1 }} </td>
+                            <td> {{ data.2 }} </td>
+                            <td> {{ data.3 }} </td>
+                            <td> {{ data.4 }} </td>
+                            <td> {{ data.5 }} </td>
+                            <td> {{ data.6 }} </td>
+                            <td> {{ data.7 }} </td>
+                            <td> 
+                                
+                                <a href="/edit_MSAN/{{data.0}}" data-toggle="modal" data-target="#msan{{data.0}}">
+                                    <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                </a>
+                                <a href="/delete_msan/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                    <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                </a>
+                        
+                            </td>
+                            
+                        </tr>
+
+                        <div class="modal fade" id="msan{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="ModalLabel">Update MSAN</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form action="{{ url_for('editMSAN', msan_id=data.0) }}" method="POST">
+                                    <div class="form-group">
+                                        <label for="rg_id" class="col-form-label">RG_ID</label>
+                                          <select id="rg_id" name="rg_id" class="form-control">
+                                            <option value={{data.1}}>{{data.1}}</option>
+                                            {% for i in listRG %}
+                                              <option value="{{i[0]}}"> {{i[0]}} </option>
+                                            {% endfor %}                   
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="name" class="col-form-label">Name</label>
+                                        <input value={{data.2}} type="text" class="form-control" id="name" name="name" placeholder="Nom MSAN">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="x" class="col-form-label">Mesure X</label>
+                                        <input value={{data.3}} type="text" class="form-control" id="x" name="x"  placeholder="Mesure X">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="y" class="col-form-label">Mesure Y</label>
+                                        <input value={{data.4}} type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="NB_ports" class="col-form-label">NB_ports</label>
+                                        <input value={{data.5}} type="text" class="form-control" id="NB_ports" name="NB_ports"  placeholder="Nombre de ports">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="paireO" class="col-form-label">Paire Occupé</label>
+                                        <input value={{data.6}} type="text" class="form-control" id="paireO" name="paireO"  placeholder="Paire Occupé">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="paireL" class="col-form-label">Paire Libre</label>
+                                        <input value={{data.7}} type="text" class="form-control" id="paireL" name="paireL"  placeholder="Paire Occupé">
+                                      </div>
+                                      
+                                  
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="submit" class="btn btn-success">Update</button>
+                                  <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                              </div>
+                            </div>
+                        </div>
+
+
+                        {% endfor %}
+                    
+                    </tbody>
+      
+      
+                </table>
+            </div>
+            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col">X</th>
+                            <th scope="col">Y</th>
+                            <th scope="col">Paire_O</th>
+                            <th scope="col">Paire_L</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+       
+                    <tbody>
+                        {% for data in listPC %}
+                        <tr>
+                            <th scope="row"> {{ data.0 }} </th>
+                            <td> {{ data.1 }} </td>
+                            <td> {{ data.2 }} </td>
+                            <td> {{ data.3 }} </td>
+                            <td> {{ data.4 }} </td>
+                            <td> {{ data.5 }} </td>
+                            <td> {{ data.6 }} </td>
+                            <td> 
+                                <a href="/edit_pc/{{data.0}}" data-toggle="modal" data-target="#pc{{data.0}}">
+                                    <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                </a>
+                                <a href="/delete_pc/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                    <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                </a>
+                            </td>
+                            
+                        </tr>
+
+                        <div class="modal fade" id="pc{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="ModalLabel">Update PC</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form action="{{ url_for('editPC', pc_id=data.0) }}" method="POST">
+
+                                    <div class="form-group">
+                                        <label for="name" class="col-form-label">Name</label>
+                                        <input value="{{ data.1 }}" type="text" class="form-control" id="name" name="name" placeholder="Nom PC">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="x" class="col-form-label">Mesure X</label>
+                                        <input value="{{ data.2 }}" type="text" class="form-control" id="x" name="x"  placeholder="Mesure X">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="y" class="col-form-label">Mesure Y</label>
+                                        <input value="{{ data.3 }}" type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y">
+                                      </div>
+                            
+                                      <div class="form-group">
+                                        <label for="paireO" class="col-form-label">Paire Occupé</label>
+                                        <input value="{{ data.4 }}" type="text" class="form-control" id="paireO" name="paireO"  placeholder="Paire Occupé">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="paireL" class="col-form-label">Paire Libre</label>
+                                        <input value="{{ data.5 }}" type="text" class="form-control" id="paireL" name="paireL"  placeholder="Paire Occupé">
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="Type" class="col-form-label">Type</label>
+                                            <select id="Type" name="Type" class="form-control">
+                                              <option value="{{ data.6 }}">{{ data.6 }}</option>
+                                              <option value="SR"> SR </option>
+                                              <option value="MSAN"> MSAN </option>
+                                            </select>
+                                      </div>
+                                  
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="submit" class="btn btn-success">Update</button>
+                                  <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                              </div>
+                            </div>
+                        </div>
+
+
+                        {% endfor %}
+                    
+                    </tbody>
+      
+      
+                </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

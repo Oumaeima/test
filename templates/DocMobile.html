@@ -8,41 +8,44 @@
       <div class="card-body">
         <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
           <h4 class="card-title mb-0">Ajouter Document</h4>
-       
         </div>
         <div class="wrapper">
           <hr>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info">
-              <form action="#">
+              <form method="post" action="{{url_for('docMobile')}}">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      {% for msg in messages %}
+                        <div style="margin-top : 6px" class="alert alert-danger" role="alert"> {{msg}} </div>
+                      {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <div class="form-group">
                   <label for="Region">Region</label>
                   <select id="Region" name="Region" class="form-control">
-                    <option>Select Région</option>
-                    <option>America</option>
-                    <option>Italy</option>
-                    <option>Russia</option>
-                    <option>Britain</option>
+                    <option>Select Region</option>
+                    {% for i in Region %}
+                      <option value="{{i[1]}}"> {{i[1]}} </option>
+                    {% endfor %}
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="Délegation">Délegation</label>
                   <select id="Délegation" name="Délegation" class="form-control">
-                    <option>Select Délegation</option>
-                    <option>America</option>
-                    <option>Italy</option>
-                    <option>Russia</option>
-                    <option>Britain</option>
+                    <option>Select Delegation</option>
+                    {% for i in listDelegation %}
+                      <option value="{{i[2]}}"> {{i[2]}} </option>
+                    {% endfor %}
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="Site_Name">Site_Name</label>
                   <select id="Site_Name" name="Site_Name" class="form-control">
-                    <option>Select Name</option>
-                    <option>America</option>
-                    <option>Italy</option>
-                    <option>Russia</option>
-                    <option>Britain</option>
+                    <option>Select site_Name</option>
+                    {% for i in sitename %}
+                      <option value="{{i[1]}}"> {{i[1]}} </option>
+                    {% endfor %}
                   </select>
                 </div>
                 <div class="form-group">
@@ -57,7 +60,7 @@
                 </div>
                 <div class="form-group">
                     <label for="formFile">Documentation</label>
-                    <input class="form-control" type="file" id="formFile">
+                    <input class="form-control" type="file" id="formFile" name="formFile">
                 </div>
 
                 <button  type="submit" class="btn btn-outline-success col-12">Ajouter</button>

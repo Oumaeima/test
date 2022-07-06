@@ -1,83 +1,173 @@
 {%extends 'Navbar.html'%}
 
-{% block title %}Documentation Mobile{% endblock  %}
+{% block title %}Documentation Accés fixe{% endblock  %}
 
 {%block content%}
-    
-   
-                <a class="nav-link nav-btn" href="{{url_for('addSiteRadio')}}" >
-                    <span class="btn">+ Create new Site</span>
-                </a>
-                
-                <div class="input-group rounded">
-                
-                    <input style="margin-left : 800px" type="search" class="form-control col-2 rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                    <span class="input-group-text border-0" id="search-addon">
-                      <img src="static/images/rechercher.png"></img>
-                    </span>
-                </div>
-         
-     
-    <table style = "margin-top : 30px" id="dtHorizontalExample" class="table table-striped  table-sm" cellspacing="0"
-    width="100%">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nom</th>
-            <th scope="col">Accés</th>
-            <th scope="col">Date_S</th>
-            <th scope="col">Type</th>
-            <th scope="col">HBA</th>
-            <th scope="col">Locataire</th>
-            <th scope="col">Loyer</th>
-            <th scope="col">Surface_S</th>
-            <th scope="col">Surface_U</th>
-            <th scope="col">Surface_D</th>
-            <th scope="col">Région</th>
-            <th scope="col">Déligation</th>
-            <th scope="col">Fournisseur</th>
-            <th scope="col">Action</th>
-        
-        </tr>
-        </thead>
+<div class="col-lg-12 side-right stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+          <h4 class="card-title mb-0">Configuration Accés Fixe</h4>
        
-        <tbody>
-            {% for data in allData %}
-            <tr>
-                <th scope="row"> {{ data.0 }} </th>
-                <td> {{ data.1 }} </td>
-                <td> {{ data.2 }} </td>
-                <td> {{ data.3 }} </td>
-                <td> {{ data.4 }} </td>
-                <td> {{ data.5 }} </td>
-                <td> {{ data.6 }} </td>
-                <td> {{ data.7 }} </td>
-                <td> {{ data.8 }} </td>
-                <td> {{ data.9 }} </td>
-                <td> {{ data.10 }} </td>
-                <td> {{ data.11 }} </td>
-                <td> {{ data.12 }} </td>
-                <td> {{ data.13 }} </td>
-                <td> 
-                    
-                    <a href="{{ url_for('addCellule') }}" >
-                        <i class="icon-plus text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add Cellule"></i>
-                    </a>
-                    <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
-                    <i class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+        </div>
+        <div class="wrapper">
+          <hr>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for msg in messages %}
+                    <div style="margin-top : 6px" class="alert alert-danger" role="alert"> {{msg}} </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+    <form class="form-sample" method="post" action="{{url_for('addSiteRadio')}}">
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Nom_Site" class="col-sm-3 col-form-label">Nom Site</label>
+            <div class="col-sm-9">
+              <input id="Nom_Site" name="Nom_Site" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Accés" class="col-sm-3 col-form-label">Accés</label>
+            <div class="col-sm-9">
+              <select id="Accés" name="Accés" class="form-control">
+                <option>Fibre</option>
+                <option>LS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Date_Service" class="col-sm-3 col-form-label">Date mise en Service</label>
+            <div class="col-sm-9">
+              <input id="Date_Service" name="Date_Service"  type="date" class="form-control" placeholder="dd/mm/yyyy"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Type_Station" class="col-sm-3 col-form-label">Type Station</label>
+            <div class="col-sm-9">
+              <select id="Type_Station" name="Type_Station" class="form-control">
+                <option>MAT</option>
+                <option>Pylone</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="HBA" class="col-sm-3 col-form-label">HBA</label>
+            <div class="col-sm-9">
+              <input id="HBA" name="HBA" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Surface_Site" class="col-sm-3 col-form-label">Surface Site</label>
+            <div class="col-sm-9">
+              <input id="Surface_Site" name="Surface_Site" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Locataire" class="col-sm-3 col-form-label">Locataire</label>
+            <div class="col-sm-9">
+              <input id="Locataire" name="Locataire" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Surface_Utilise" class="col-sm-3 col-form-label">Surface Utilisé</label>
+            <div class="col-sm-9">
+              <input id="Surface_Utilise" name="Surface_Utilise" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Loyer_Actuel" class="col-sm-3 col-form-label">Loyer Actuel</label>
+            <div class="col-sm-9">
+              <input id="Loyer_Actuel" name="Loyer_Actuel" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Surface_Disponible" class="col-sm-3 col-form-label">Surface Disponible</label>
+            <div class="col-sm-9">
+              <input id="Surface_Disponible" name="Surface_Disponible" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Region" class="col-sm-3 col-form-label">Région</label>
+            <div class="col-sm-9">
+              <select id="Region" name="Region" class="form-control">
+                <option>Select Region</option>
+                {% for i in Region %}
+                  <option value="{{i[1]}}"> {{i[1]}} </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Deligation" class="col-sm-3 col-form-label">Déligation</label>
+            <div class="col-sm-9">
+              <select id="Delegation" name="Delegation" class="form-control">
+                <option>Select Delegation</option>
+                {% for i in listDelegation %}
+                  <option value="{{i[2]}}"> {{i[2]}} </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label for="Fournisseur" class="col-sm-3 col-form-label">Fournisseur</label>
+            <div class="col-sm-9">
+              <input id="Fournisseur" name="Fournisseur" type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-outline-success col-12">Ajouter Cellule</button>
+    </form>
+            </div><!-- tab content ends -->
             
-                </td>
-                
-            </tr>
-
            
-
-
-            {% endfor %}
-          
-            </tbody>
-      
-      
-    </table>
-   
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

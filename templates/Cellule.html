@@ -4,6 +4,7 @@
 {% block title %}Acces Mobile{% endblock  %}
 
 {%block content%}
+
 <div class="row">
             
             
@@ -11,14 +12,20 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Ajouter Réseau Cellulaire</h4>
+        {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                      {% for msg in messages %}
+                        <div style="margin-top : 6px" class="alert alert-danger" role="alert"> {{msg}} </div>
+                      {% endfor %}
+                    {% endif %}
+        {% endwith %}
         <form class="form-sample" method="post" action="{{url_for('addCellule')}}">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <label for="site_Name" class="col-sm-3 col-form-label">Site_id</label>
+                <label for="site_id" class="col-sm-3 col-form-label">Site_id</label>
                 <div class="col-sm-9">
-                  <input id="Name" name="Name" type="text" class="form-control"/>
-                  
+                  <input value="{{id.0}}" id="site_id" name="site_id" type="text" class="form-control" readonly/>
                 </div>
               </div>
             </div>
@@ -42,9 +49,9 @@
             </div>
             <div class="col-md-6">
               <div class="form-group row">
-                <label for="Power" class="col-sm-3 col-form-label">Power</label>
+                <label for="Bande" class="col-sm-3 col-form-label">Bande</label>
                 <div class="col-sm-9">
-                  <input id="Power" name="Power"  type="text" class="form-control"/>
+                  <input id="Bande" name="Bande"  type="text" class="form-control"/>
                 </div>
               </div>
             </div>
@@ -55,19 +62,27 @@
                 <label for="Technologie" class="col-sm-3 col-form-label">Technologie</label>
                 <div class="col-sm-9">
                   <select id="Technologie" name="Technologie" class="form-control">
-                    <option>4G</option>
-                    <option>3G</option>
-                    <option>2G</option>
+                    <option>Select Technologie</option>
+                    <option value="4G">4G</option>
+                    <option value="3G">3G</option>
+                    <option value="2G">2G</option>
                   </select>
+                  
                 </div>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group row">
                 <label for="RNC" class="col-sm-3 col-form-label">RNC</label>
+              
+                      {% if Technologie == '2G'%}
+                        {{ RNC(readonly=true) }}
+                      {% else %}
+               
                 <div class="col-sm-9">
                   <input id="RNC" name="RNC" type="text" class="form-control" />
                 </div>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -75,9 +90,9 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <label for="ICH" class="col-sm-3 col-form-label">ICH</label>
+                <label for="TCH" class="col-sm-3 col-form-label">TCH</label>
                 <div class="col-sm-9">
-                  <input id="ICH" name="ICH" type="text" class="form-control" />
+                  <input id="TCH" name="TCH" type="text" class="form-control" />
                 </div>
               </div>
             </div>
@@ -86,7 +101,7 @@
                 <label for="Delegation" class="col-sm-3 col-form-label">Delegation</label>
                 <div class="col-sm-9">
                   <select id="Delegation" name="Delegation" class="form-control">
-                    <option>Select Site Name</option>
+                    <option>Select Delegation</option>
                     {% for i in listDelegation %}
                       <option value="{{i[2]}}"> {{i[2]}} </option>
                     {% endfor %}
@@ -131,9 +146,9 @@
             </div>
             <div class="col-md-6">
               <div class="form-group row">
-                <label for="RCCH" class="col-sm-3 col-form-label">RCCH</label>
+                <label for="BCH" class="col-sm-3 col-form-label">BCH</label>
                 <div class="col-sm-9">
-                  <input id="RCCH" name="RCCH" type="text" class="form-control" />
+                  <input id="BCH" name="BCH" type="text" class="form-control" />
                 </div>
               </div>
             </div>
