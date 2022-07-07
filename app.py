@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 import mysql.connector
 from functools import wraps
-
+from flask_paginate import Pagination, get_page_parameter
 
 ### connection avec la base de donnees
 connection = mysql.connector.connect(host='localhost',port='3306',database='my-app',user='root',password='')
@@ -47,15 +47,15 @@ def login_required(test):
 
 
 ## search result
-@app.route('/search',  methods=['GET'])
+@app.route('/search/', methods=['GET'])
 def search():
-    if request.method == 'POST':
-        result = request.args.get('search')
-        if result:
-            cursorSite.execute("SELECT * FROM site_radio WHERE Nom_Site=%s",(result))
-            site = cursorSite.fetchone()
-            print(result)
-    return 'sa marche'
+    db = get_db()
+    qTerm = request.args.get('q')
+    if qTerm:
+        cleanQuery = escape(qTerm)
+        dbQuery = connection.execute('SELECT * FROM site_radio WHERE Nom_Site LIKE ? ', ['%'+ cleanQuery +'%'])
+        res = dbQuery.fetchall()
+    return render_template('search.html', res=res)
         
 
 
@@ -87,13 +87,22 @@ def users():
 @app.route('/details_mobile', methods=['GET','POST'])
 @login_required
 def generaleMobile():
-    cursorSite.execute("SELECT * FROM site_radio")
+    cursorSite.execute("SELECT * FROM site_radio ORDER BY Site_id ASC")
+    total = cursorSite.fetchall()
+
+    page = request.args.get(get_page_parameter(), type=int, default=1)  
+    per_page = 5
+    offset = (page - 1) * per_page
+    pagination = Pagination(page=page, per_page=per_page,total=len(total))   
+    numrows = int(cursorSite.rowcount)
+
+    cursorSite.execute("SELECT * FROM site_radio LIMIT %s OFFSET %s", (per_page, offset,))
     site = cursorSite.fetchall()
 
     cursorCell.execute("SELECT * FROM cellule")
     cellule = cursorCell.fetchall()
 
-    return render_template("GeneraleMobile.html", site=site, cellule=cellule, Region=Region, listDelegation=listDelegation, sitename=sitename)
+    return render_template("GeneraleMobile.html", site=site, cellule=cellule, Region=Region, listDelegation=listDelegation, sitename=sitename, pagination=pagination, numrows=numrows, total=total)
 
 
 ### ajouter site radio
