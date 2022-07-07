@@ -46,6 +46,19 @@ def login_required(test):
     return wrap
 
 
+## search result
+@app.route('/search',  methods=['GET'])
+def search():
+    if request.method == 'POST':
+        result = request.args.get('search')
+        if result:
+            cursorSite.execute("SELECT * FROM site_radio WHERE Nom_Site=%s",(result))
+            site = cursorSite.fetchone()
+            print(result)
+    return 'sa marche'
+        
+
+
 ### index page
 @app.route('/')
 @login_required
@@ -235,7 +248,8 @@ def editCellule(cel_id):
         cursor.execute("SELECT * FROM cellule WHERE site_id=%s", (Site_id,))
         id = cursor.fetchall()
     
-    return render_template("DetailSite.html",cel_id=cel_id, id=id, Region=Region, listDelegation=listDelegation) 
+        return render_template("DetailSite.html",cel_id=cel_id, id=id, Region=Region, listDelegation=listDelegation) 
+    return redirect(url_for('editCellule'))
         
         
 
