@@ -72,7 +72,7 @@
                             </thead>
         
                             <tbody>
-                                {% for data in id %}
+                                {% for data in site %}
                                 <tr>
                                     <th scope="row"> {{ data.0 }} </th>
                                     <td> {{ data.1 }} </td>
@@ -191,18 +191,12 @@
         
         
                         </table>
-        
                     </div>
                     <nav style="margin-top : 15px">
-                        <ul class="pagination separated pagination-danger">
-                          <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-left"></i></a></li>
-                          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item"><a class="page-link" href="#">4</a></li>
-                          <li class="page-item"><a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a></li>
-                        </ul>
-                      </nav>
+                      <ul class="pagination separated pagination-danger">
+                          {{pagination.links}}
+                      </ul>
+                    </nav>
                 </div><!-- tab content ends -->
 
 

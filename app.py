@@ -44,20 +44,19 @@ def login_required(test):
         else:
             return redirect(url_for('login'))
     return wrap
-
-
-## search result
-@app.route('/search/', methods=['GET'])
-def search():
-    db = get_db()
-    qTerm = request.args.get('q')
-    if qTerm:
-        cleanQuery = escape(qTerm)
-        dbQuery = connection.execute('SELECT * FROM site_radio WHERE Nom_Site LIKE ? ', ['%'+ cleanQuery +'%'])
-        res = dbQuery.fetchall()
-    return render_template('search.html', res=res)
         
 
+@app.route('/search', methods=['GET', 'POST'])
+def search2():
+    if request.method == "POST":
+        res = request.form['q']
+        cursor.execute("SELECT * FROM site_radio WHERE Nom_Site = %s", (res,))
+         
+        data = cursor.fetchall()
+        print(data)
+        return redirect(url_for('search2', data=data))
+    return redirect(url_for('search2'))
+   
 
 ### index page
 @app.route('/')
@@ -148,11 +147,19 @@ def addSiteRadio():
 @login_required
 def siteDetail(site_id):
     
-    cursor.execute("SELECT * FROM cellule WHERE site_id=%s", (site_id,))
+    cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
     id = cursor.fetchall()
-    
-    return render_template("DetailSite.html", id=id, Region=Region, listDelegation=listDelegation) 
 
+    page = request.args.get(get_page_parameter(), type=int, default=1)  
+    per_page = 1
+    offset = (page - 1) * per_page
+    pagination = Pagination(page=page, per_page=per_page,total=len(id))   
+    numrows = int(cursor.rowcount)
+
+    cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (site_id, per_page, offset,))
+    site = cursor.fetchall()
+    
+    return render_template("DetailSite.html",site=site, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id) 
 
 
 
@@ -254,11 +261,24 @@ def editCellule(cel_id):
               UPDATE cellule SET site_id=%s, Azimuth=%s, Bande=%s, Technologie=%s, RNC=%s, TCH=%s, Delegation=%s, Region=%s, Name=%s, Antene=%s, BSC=%s, BCH=%s, LAC=%s WHERE id=%s
               """,              (Site_id, Azimuth, Bande, Technologie, RNC, TCH, Delegation, region, cel_name, Antene, BSC, BCH, LAC, cel_id))
         connection.commit()
-        cursor.execute("SELECT * FROM cellule WHERE site_id=%s", (Site_id,))
+        #cursor.execute("SELECT * FROM cellule WHERE site_id=%s", (Site_id,))
+        #id = cursor.fetchall()
+
+        cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC", (Site_id,))
         id = cursor.fetchall()
+
+        page = request.args.get(get_page_parameter(), type=int, default=1)  
+        per_page = 1
+        offset = (page - 1) * per_page
+        pagination = Pagination(page=page, per_page=per_page,total=len(id))   
+        numrows = int(cursor.rowcount)
+
+        cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (Site_id, per_page, offset,))
+        site = cursor.fetchall()
     
-        return render_template("DetailSite.html",cel_id=cel_id, id=id, Region=Region, listDelegation=listDelegation) 
-    return redirect(url_for('editCellule'))
+        return render_template("DetailSite.html",site=site, cel_id=cel_id, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id)
+        
+    return redirect(url_for('detail_site',cel_id=cel_id))
         
         
 
