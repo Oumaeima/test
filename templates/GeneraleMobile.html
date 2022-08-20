@@ -9,10 +9,10 @@
         <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
           <h4 class="card-title mb-0">Site Radio</h4>
 
-          <form style="margin-left : 400px" class="d-flex">
-            <input id="q" name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          <div style="margin-left : 400px" class="d-flex">
+            <input id="search_input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" onclick="searchTable()">Search</button>
+          </div>
         </div>
         <div class="wrapper">
           <hr>
@@ -74,99 +74,99 @@
                                 
                             </tr>
 
-                        <div class="modal fade" id="site{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                        <d class="modal fade" id="site{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
                                 <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="ModalLabel">Update Site</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <div class="modal-body">
-                                    <form action="{{ url_for('editSite', site_id=data.0) }}" method="POST">
-                                        
-                                        <div class="form-group">
-                                            <label for="Nom_Site" class="col-form-label">Nom Site</label>
-                                            <input value="{{data.1}}" id="Nom_Site" name="Nom_Site" type="text" class="form-control" /> 
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalLabel">Update Site</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
+                                        <div class="modal-body">
+                                        <form action="{{ url_for('editSite', site_id=data.0) }}" method="POST">
+                                            
+                                            <div class="form-group">
+                                                <label for="Nom_Site" class="col-form-label">Nom Site</label>
+                                                <input value="{{data.1}}" id="Nom_Site" name="Nom_Site" type="text" class="form-control" /> 
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="Accés" class="col-form-label">Accés </label>
-                                            <select id="Accés" name="Accés" class="form-control">
-                                                <option value="{{data.2}}">{{data.1}}</option>
-                                                <option value="Fibre">Fibre</option>
-                                                <option value=="LS">LS</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Date_Service" class="col-form-label">Date mise en Service</label>
-                                            <input value="{{data.3}}" id="Date_Service" name="Date_Service"  type="date" class="form-control"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Type_Station" class="col-form-label">Type Station</label>
-                                            <select id="Type_Station" name="Type_Station" class="form-control">
-                                                <option value="{{data.4}}">{{data.2}}</option>
-                                                <option>MAT</option>
-                                                <option>Pylone</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="HBA" class="col-form-label">HBA</label>
-                                            <input value="{{data.5}}" id="HBA" name="HBA" type="text" class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Surface_Site" class="col-form-label">Surface Site</label>
-                                            <input value="{{data.6}}" id="Surface_Site" name="Surface_Site" type="text" class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Locataire" class="col-form-label">Locataire</label>
-                                            <input value="{{data.7}}" id="Locataire" name="Locataire" type="text" class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Surface_Utilise" class="col-form-label">Surface Utilisé</label>
-                                            <input value="{{data.8}}" id="Surface_Utilise" name="Surface_Utilise" type="text" class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Loyer_Actuel" class="col-form-label">Loyer Actuel</label>
-                                            <input value="{{data.9}}" id="Loyer_Actuel" name="Loyer_Actuel" type="text" class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Surface_Disponible" class="col-form-label">Surface Disponible</label>
-                                            <input value="{{data.10}}" id="Surface_Disponible" name="Surface_Disponible" type="text" class="form-control" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Region" class="col-form-label">Région</label>
-                                            <select id="Region" name="Region" class="form-control">
-                                                <option>{{data.11}}</option>
-                                                {% for i in Region %}
-                                                <option value="{{i[1]}}"> {{i[1]}} </option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="Accés" class="col-form-label">Accés </label>
+                                                <select id="Accés" name="Accés" class="form-control">
+                                                    <option value="{{data.2}}">{{data.1}}</option>
+                                                    <option value="Fibre">Fibre</option>
+                                                    <option value="LS">LS</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Date_Service" class="col-form-label">Date mise en Service</label>
+                                                <input value="{{data.3}}" id="Date_Service" name="Date_Service"  type="date" class="form-control"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Type_Station" class="col-form-label">Type Station</label>
+                                                <select id="Type_Station" name="Type_Station" class="form-control">
+                                                    <option value="{{data.4}}">{{data.2}}</option>
+                                                    <option>MAT</option>
+                                                    <option>Pylone</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="HBA" class="col-form-label">HBA</label>
+                                                <input value="{{data.5}}" id="HBA" name="HBA" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Surface_Site" class="col-form-label">Surface Site</label>
+                                                <input value="{{data.6}}" id="Surface_Site" name="Surface_Site" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Locataire" class="col-form-label">Locataire</label>
+                                                <input value="{{data.7}}" id="Locataire" name="Locataire" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Surface_Utilise" class="col-form-label">Surface Utilisé</label>
+                                                <input value="{{data.8}}" id="Surface_Utilise" name="Surface_Utilise" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Loyer_Actuel" class="col-form-label">Loyer Actuel</label>
+                                                <input value="{{data.9}}" id="Loyer_Actuel" name="Loyer_Actuel" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Surface_Disponible" class="col-form-label">Surface Disponible</label>
+                                                <input value="{{data.10}}" id="Surface_Disponible" name="Surface_Disponible" type="text" class="form-control" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Region" class="col-form-label">Région</label>
+                                                <select id="Region" name="Region" class="form-control">
+                                                    <option>{{data.11}}</option>
+                                                    {% for i in Region %}
+                                                    <option value="{{i[1]}}"> {{i[1]}} </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
 
-                                        <div class="form-group">
-                                            <label for="Delegation" class="col-form-label">Déligation</label>
-                                            <select id="Delegation" name="Delegation" class="form-control">
-                                                <option>{{data.12}}</option>
-                                                {% for i in listDelegation %}
-                                                <option value="{{i[2]}}"> {{i[2]}} </option>
-                                                {% endfor %}
-                                            </select>
+                                            <div class="form-group">
+                                                <label for="Delegation" class="col-form-label">Déligation</label>
+                                                <select id="Delegation" name="Delegation" class="form-control">
+                                                    <option>{{data.12}}</option>
+                                                    {% for i in listDelegation %}
+                                                    <option value="{{i[2]}}"> {{i[2]}} </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Fournisseur" class="col-form-label">Fournisseur</label>
+                                                <input value="{{data.13}}" id="Fournisseur" name="Fournisseur" type="text" class="form-control" />
+                                            </div>
+                                    
+                                        <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Update</button>
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="Fournisseur" class="col-form-label">Fournisseur</label>
-                                            <input value="{{data.13}}" id="Fournisseur" name="Fournisseur" type="text" class="form-control" />
+                                    </form>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">Update</button>
-                                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                                    </div>
-                                </form>
                                 </div>
-                                </div>
-                        </div>
+                                  </div>
 
 
                             {% endfor %}
@@ -192,4 +192,140 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    var sites = '{{ site|tojson }}';
+    var allSites = JSON.parse(sites)
+    let usedSites;
+    let page = 1;
+    let perPage = 5;
+    let offset;
+    let searchTable = ()=>{
+          var searchInputText = document.getElementById('search_input').value;
+          var table = document.getElementById('dtHorizontalExample')
+          if(searchInputText != '') {
+               usedSites = allSites.filter((site,index)=>{
+                var checked = false
+                for(var i = 0; i < site.length;i++){
+                    if(site[i].toString().includes(searchInputText)){
+                        checked = true
+                    }
+                }
+                return site.includes(searchInputText) || checked
+              })
+          } else {
+            usedSites = allSites
+          }
+          var toShow = usedSites.slice((page-1) * perPage, ((page-1) * perPage) + perPage)
+          usedSites = toShow
+          $("tbody").children().remove()
+          for(var i = 0; i < usedSites.length;i++){
+              $("tbody").append(`
+              <tr>
+                                <th scope="row">  ${usedSites[i][0]}  </th>
+                                <td>  ${usedSites[i][1]}  </td>
+                                <td>  ${usedSites[i][2]}  </td>
+                                <td>  ${usedSites[i][3]}  </td>
+                                <td>  ${usedSites[i][4]}  </td>
+                                <td>  ${usedSites[i][5]}  </td>
+                                <td>  ${usedSites[i][6]}  </td>
+                                <td>  ${usedSites[i][7]}  </td>
+                                <td>  ${usedSites[i][8]}  </td>
+                                <td>  ${usedSites[i][9]}  </td>
+                                <td>  ${usedSites[i][10]}  </td>
+                                <td>  ${usedSites[i][11]}  </td>
+                                <td>  ${usedSites[i][12]} </td>
+                                <td>  ${usedSites[i][13]}  </td>
+                                <td> 
+
+                                  <a href="/detail_site/${usedSites[i][0]}" >
+                                    <i class="icon-user-female text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View"></i>
+                                  </a>
+                                    <a href="/edit_site/${usedSites[i][0]}" data-toggle="modal" data-target="#site${usedSites[i][0]}">
+                                        <i style="margin-left : 6px" class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                    </a>
+                                    <a href="/delete_site/${usedSites[i][0]}" onclick="return confirm('Are You Sure For Delete?')">
+                                        <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                    </a>
+                            
+                                </td>
+                                
+                                </tr>
+                            `)
+          }
+          sortPagination()
+    }
+    let sortPagination = () => {
+        var html = `
+        <li class="page-item" id="previous">
+        <span class="page-link"> « </span>
+        </li>
+
+        <li class="page-item" id="next">
+        <a class="page-link"  aria-label="Next"
+            ><span aria-hidden="true">»</span><span class="sr-only">Next</span></a
+        >
+        </li>
+`
+        $('.pagination').html(html)
+        if(!usedSites.length) {
+            $(`
+                    <li class="page-item disabled" id="0" class"remove">
+                    <a class="page-link" >0 <span class="sr-only"> (current) </span></a>
+                    </li>
+                `).insertAfter('#previous')
+        } else {
+            $('#0').remove()
+        
+        offset = Number(allSites.length/perPage)
+        let element;
+        for(var i = 1; i < offset+1; i++){
+            var x = document.getElementById(i-1)
+            if(x && i==page){
+                $(`
+                    <li class="page-item active" id="${i}" class"remove">
+                    <a class="page-link" >${i} <span class="sr-only"> (current) </span></a>
+                    </li>
+                `).insertAfter(x)
+                element = document.getElementById(i)
+            element.addEventListener('click',()=>{
+                page = element.id
+                searchTable()
+            })
+            } else if (x && i != page) {
+                $(`
+                    <li  class="page-item" id="${i}"  class"remove">
+                    <a class="page-link" >${i}</a>
+                    </li>
+                `).insertAfter(x)
+                element = document.getElementById(i)
+            element.addEventListener('click',()=>{
+                page = element.id
+                searchTable()
+            })
+            } else if (i == 1) {
+                if(page == 1) {
+                    $(`
+                    <li   class="page-item active" id="1" class"remove">
+                    <a class="page-link" >1 <span class="sr-only"> (current) </span></a>
+                    </li>
+                `).insertAfter('#previous')
+                } else {
+                    $(`
+                    <li   class="page-item" id="1" class"remove">
+                    <a class="page-link" >1 <span class="sr-only"> (current) </span></a>
+                    </li>
+                `).insertAfter('#previous')
+                }
+                element = document.getElementById('1')
+            element.addEventListener('click',()=>{
+                page = 1
+                searchTable()
+            })
+            }
+           
+        }
+    }
+    }
+    searchTable()
+  </script>
 {% endblock %}
