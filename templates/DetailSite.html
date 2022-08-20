@@ -37,20 +37,19 @@
             <hr>
             <div class="tab-content tab-content-custom-pill" id="pills-tabContent-custom">
               <div class="tab-pane fade show active" id="pills-health" role="tabpanel" aria-labelledby="pills-home-tab-custom">
-                <div class="d-flex mb-4">
-                    <a href="{{ url_for('addCellule') }}">
-                        <button type="button" class="btn btn-outline-info"><i class="icon-plus"></i></button>
-                    </a>
-                    <form style="margin-left : 400px" action="{{url_for('search')}}" class="d-flex" method="get">
-                        <input id="search" name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                </div>
-                
+              
                 <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info">
+                  <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+                    <h4 class="card-title mb-0">Cellule</h4>
+          
+                    <div style="margin-left : 400px" class="d-flex">
+                      <input id="search_input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                      <button class="btn btn-outline-success" onclick="searchTable()">Search</button>
+                    </div>
+                  </div>
                     <div style="overflow-x:auto;">
-                        <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-striped">
-                            <thead>
+                        <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-hover">
+                            <thead class='thead-light'>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Site_id</th>
@@ -115,7 +114,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="name" class="col-form-label">Cellule_Name</label>
-                                                <input value="{{data.10}}" id="Name" name="Name" type="text" class="form-control" />
+                                                <input value="{{data.9}}" id="Name" name="Name" type="text" class="form-control" />
                                                 </div>
                                                 <div class="form-group">
                                                 <label for="x" class="col-form-label">Azimuth</label>
@@ -210,51 +209,592 @@
 
               </div>
               <div class="tab-pane fade" id="pills-career" role="tabpanel" aria-labelledby="pills-profile-tab-custom">
-                <div class="media">
-                  <img class="mr-3 w-25 rounded" src="../../../../images/samples/300X300/10.html" alt="sample image">
-                  <div class="media-body">
-                    <p>I'm thinking two circus clowns dancing. You? Finding a needle in a haystack isn't hard when every straw is 
-                      computerized. Tell him time is of the essence. 
-                      Somehow, I doubt that. You have a good heart, Dexter.</p>
+                <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+                  <h4 class="card-title mb-0">Documentation</h4>
+        
+                  <div style="margin-left : 400px" class="d-flex">
+                    <input id="search_input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" onclick="searchTable()">Search</button>
                   </div>
                 </div>
+                <div style="overflow-x:auto;">
+                  <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-hover">
+                      <thead class='thead-light'>
+                          <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Site_id</th>
+                              <th scope="col">Documentation</th>
+                              <th scope="col">Type</th>
+                              <th scope="col">Region</th>
+                              <th scope="col">Deligation</th>
+                              <th scope="col">Action</th>
+                          
+                          </tr>
+                      </thead>
+  
+                      <tbody>
+                          {% for data in doc %}
+                          <tr>
+                              <th scope="row"> {{ data.0 }} </th>
+                              <td> {{ data.1 }} </td>
+                              <td> {{ data.9 }} </td>
+                              <td> {{ data.2 }} </td>
+                              <td> {{ data.3 }} </td>
+                              <td> {{ data.4 }} </td>
+                              <td> {{ data.5 }} </td>
+                              <td> 
+                                  <a href="/edit_cel/{{data.0}}" data-toggle="modal" data-target="#edit{{data.0}}">
+                                      <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                  </a>
+                                  <a href="/delete_cel/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                      <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                  </a>
+                              </td>
+                              
+                          </tr>
+                          <div class="modal fade" id="edit{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                              <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="ModalLabel">Update Cellule</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <form action="{{ url_for('editCellule', cel_id=data.0) }}" method="POST">
+                                      <div class="form-group">
+                                          <label for="Site_id" class="col-form-label">Site_id</label>
+                                          <input value="{{data.1}}" id="Site_id" name="Site_id" type="text" class="form-control" />
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="name" class="col-form-label">Cellule_Name</label>
+                                          <input value="{{data.10}}" id="Name" name="Name" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="x" class="col-form-label">Azimuth</label>
+                                          <input value="{{data.2}}" id="Azimuth" name="Azimuth" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="y" class="col-form-label">Bande</label>
+                                          <input value="{{data.3}}" id="Bande" name="Bande"  type="text" class="form-control"/>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="Capacité" class="col-form-label">Technologie</label>
+                                          <select id="Technologie" name="Technologie" class="form-control">
+                                              <option value="{{data.4}}">{{data.4}}</option>
+                                              <option value="4G">4G</option>
+                                              <option value="3G">3G</option>
+                                              <option value="2G">2G</option>
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireO" class="col-form-label">RNC</label>
+                                          <input value="{{data.5}}" id="RNC" name="RNC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">TCH</label>
+                                          <input value="{{data.6}}" id="TCH" name="TCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Delegation</label>
+                                          <select id="Delegation" name="Delegation" class="form-control">
+                                              <option value="{{data.7}}">{{data.7}}</option>
+                                              {% for i in listDelegation %}
+                                                  <option value="{{i[2]}}"> {{i[2]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Region</label>
+                                          <select id="Region" name="Region" class="form-control">
+                                              <option value="{{data.8}}">{{data.8}}</option>
+                                              {% for i in Region %}
+                                                  <option value="{{i[1]}}"> {{i[1]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">Antene</label>
+                                          <input value="{{data.10}}" id="Antene" name="Antene" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BSC</label>
+                                          <input value="{{data.11}}"  id="BSC" name="BSC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BCH</label>
+                                          <input value="{{data.12}}" id="BCH" name="BCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">LAC</label>
+                                          <input value="{{data.13}}" id="LAC" name="LAC" type="text" class="form-control" />
+                                          </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="submit" class="btn btn-success">Update</button>
+                                      <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                  </div>
+                              </form>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      
+                      </tbody>
+  
+  
+                  </table>
+                </div>
+                <nav style="margin-top : 15px">
+                  <ul class="pagination separated pagination-danger">
+                      {{pagination.links}}
+                  </ul>
+                </nav>
               </div>
               <div class="tab-pane fade" id="pills-music" role="tabpanel" aria-labelledby="pills-contact-tab-custom">
-                <div class="media">
-                  <img class="mr-3 w-25 rounded" src="../../../../images/samples/300x300/14.jpg" alt="sample image">
-                  <div class="media-body">
-                    <p>
-                        I'm really more an apartment person. This man is a knight in shining armor. Oh I beg to differ, 
-                        I think we have a lot to discuss. After all, you are a client. You all right, Dexter?
-                    </p>
-                    <p>
-                        I'm generally confused most of the time. Cops, another community I'm not part of. You're a killer. 
-                        I catch killers. Hello, Dexter Morgan.
-                    </p>
+                <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+                  <h4 class="card-title mb-0">Intervention</h4>
+        
+                  <div style="margin-left : 400px" class="d-flex">
+                    <input id="search_input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" onclick="searchTable()">Search</button>
                   </div>
                 </div>
+                <div style="overflow-x:auto;">
+                  <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-hover">
+                      <thead class='thead-light'>
+                          <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Site_id</th>
+                              <th scope="col">Documentation</th>
+                              <th scope="col">Type</th>
+                              <th scope="col">Region</th>
+                              <th scope="col">Deligation</th>
+                              <th scope="col">Action</th>
+                          
+                          </tr>
+                      </thead>
+  
+                      <tbody>
+                          {% for data in int %}
+                          <tr>
+                              <th scope="row"> {{ data.0 }} </th>
+                              <td> {{ data.1 }} </td>
+                              <td> {{ data.9 }} </td>
+                              <td> {{ data.2 }} </td>
+                              <td> {{ data.3 }} </td>
+                              <td> {{ data.4 }} </td>
+                              <td> {{ data.5 }} </td>
+                              <td> 
+                                  <a href="/edit_cel/{{data.0}}" data-toggle="modal" data-target="#edit{{data.0}}">
+                                      <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                  </a>
+                                  <a href="/delete_cel/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                      <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                  </a>
+                              </td>
+                              
+                          </tr>
+                          <div class="modal fade" id="edit{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                              <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="ModalLabel">Update Cellule</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <form action="{{ url_for('editCellule', cel_id=data.0) }}" method="POST">
+                                      <div class="form-group">
+                                          <label for="Site_id" class="col-form-label">Site_id</label>
+                                          <input value="{{data.1}}" id="Site_id" name="Site_id" type="text" class="form-control" />
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="name" class="col-form-label">Cellule_Name</label>
+                                          <input value="{{data.10}}" id="Name" name="Name" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="x" class="col-form-label">Azimuth</label>
+                                          <input value="{{data.2}}" id="Azimuth" name="Azimuth" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="y" class="col-form-label">Bande</label>
+                                          <input value="{{data.3}}" id="Bande" name="Bande"  type="text" class="form-control"/>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="Capacité" class="col-form-label">Technologie</label>
+                                          <select id="Technologie" name="Technologie" class="form-control">
+                                              <option value="{{data.4}}">{{data.4}}</option>
+                                              <option value="4G">4G</option>
+                                              <option value="3G">3G</option>
+                                              <option value="2G">2G</option>
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireO" class="col-form-label">RNC</label>
+                                          <input value="{{data.5}}" id="RNC" name="RNC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">TCH</label>
+                                          <input value="{{data.6}}" id="TCH" name="TCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Delegation</label>
+                                          <select id="Delegation" name="Delegation" class="form-control">
+                                              <option value="{{data.7}}">{{data.7}}</option>
+                                              {% for i in listDelegation %}
+                                                  <option value="{{i[2]}}"> {{i[2]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Region</label>
+                                          <select id="Region" name="Region" class="form-control">
+                                              <option value="{{data.8}}">{{data.8}}</option>
+                                              {% for i in Region %}
+                                                  <option value="{{i[1]}}"> {{i[1]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">Antene</label>
+                                          <input value="{{data.10}}" id="Antene" name="Antene" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BSC</label>
+                                          <input value="{{data.11}}"  id="BSC" name="BSC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BCH</label>
+                                          <input value="{{data.12}}" id="BCH" name="BCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">LAC</label>
+                                          <input value="{{data.13}}" id="LAC" name="LAC" type="text" class="form-control" />
+                                          </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="submit" class="btn btn-success">Update</button>
+                                      <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                  </div>
+                              </form>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      
+                      </tbody>
+  
+  
+                  </table>
               </div>
+              <nav style="margin-top : 15px">
+                <ul class="pagination separated pagination-danger">
+                    {{pagination.links}}
+                </ul>
+              </nav>
+
+              </div>
+
+
+
+
+
+
+
+
               <div class="tab-pane fade" id="pills-vibes" role="tabpanel" aria-labelledby="pills-vibes-tab-custom">
-                <div class="media">
-                  <img class="mr-3 w-25 rounded" src="../../../../images/samples/300x300/15.jpg" alt="sample image">
-                  <div class="media-body">
-                    <p>
-                        This man is a knight in shining armor. I feel like a jigsaw puzzle missing a piece. And I'm not 
-                        even sure what the picture should be. Somehow, I doubt that. You have a good heart, Dexter. Keep your mind limber.
-                    </p>
+                <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+                  <h4 class="card-title mb-0">Visite Guidé</h4>
+        
+                  <div style="margin-left : 400px" class="d-flex">
+                    <input id="search_input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" onclick="searchTable()">Search</button>
                   </div>
                 </div>
+                <div style="overflow-x:auto;">
+                  <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-hover">
+                      <thead class='thead-light'>
+                          <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Site_id</th>
+                              <th scope="col">URL</th>
+                              <th scope="col">Region</th>
+                              <th scope="col">Deligation</th>
+                              <th scope="col">Action</th>
+                          
+                          </tr>
+                      </thead>
+  
+                      <tbody>
+                          {% for data in visite %}
+                          <tr>
+                              <th scope="row"> {{ data.0 }} </th>
+                              <td> {{ data.1 }} </td>
+                              <td> {{ data.9 }} </td>
+                              <td> {{ data.2 }} </td>
+                              <td> {{ data.3 }} </td>
+                              <td> {{ data.4 }} </td>
+                              <td> 
+                                  <a href="/edit_cel/{{data.0}}" data-toggle="modal" data-target="#edit{{data.0}}">
+                                      <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                  </a>
+                                  <a href="/delete_cel/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                      <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                  </a>
+                              </td>
+                              
+                          </tr>
+                          <div class="modal fade" id="edit{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                              <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="ModalLabel">Update Cellule</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <form action="{{ url_for('editCellule', cel_id=data.0) }}" method="POST">
+                                      <div class="form-group">
+                                          <label for="Site_id" class="col-form-label">Site_id</label>
+                                          <input value="{{data.1}}" id="Site_id" name="Site_id" type="text" class="form-control" />
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="name" class="col-form-label">Cellule_Name</label>
+                                          <input value="{{data.10}}" id="Name" name="Name" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="x" class="col-form-label">Azimuth</label>
+                                          <input value="{{data.2}}" id="Azimuth" name="Azimuth" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="y" class="col-form-label">Bande</label>
+                                          <input value="{{data.3}}" id="Bande" name="Bande"  type="text" class="form-control"/>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="Capacité" class="col-form-label">Technologie</label>
+                                          <select id="Technologie" name="Technologie" class="form-control">
+                                              <option value="{{data.4}}">{{data.4}}</option>
+                                              <option value="4G">4G</option>
+                                              <option value="3G">3G</option>
+                                              <option value="2G">2G</option>
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireO" class="col-form-label">RNC</label>
+                                          <input value="{{data.5}}" id="RNC" name="RNC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">TCH</label>
+                                          <input value="{{data.6}}" id="TCH" name="TCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Delegation</label>
+                                          <select id="Delegation" name="Delegation" class="form-control">
+                                              <option value="{{data.7}}">{{data.7}}</option>
+                                              {% for i in listDelegation %}
+                                                  <option value="{{i[2]}}"> {{i[2]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Region</label>
+                                          <select id="Region" name="Region" class="form-control">
+                                              <option value="{{data.8}}">{{data.8}}</option>
+                                              {% for i in Region %}
+                                                  <option value="{{i[1]}}"> {{i[1]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">Antene</label>
+                                          <input value="{{data.10}}" id="Antene" name="Antene" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BSC</label>
+                                          <input value="{{data.11}}"  id="BSC" name="BSC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BCH</label>
+                                          <input value="{{data.12}}" id="BCH" name="BCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">LAC</label>
+                                          <input value="{{data.13}}" id="LAC" name="LAC" type="text" class="form-control" />
+                                          </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="submit" class="btn btn-success">Update</button>
+                                      <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                  </div>
+                              </form>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      
+                      </tbody>
+  
+  
+                  </table>
+                </div>
+              <nav style="margin-top : 15px">
+                <ul class="pagination separated pagination-danger">
+                    {{pagination.links}}
+                </ul>
+              </nav>
               </div>
+
+
+
+
+
+
+
               <div class="tab-pane fade" id="pills-energy" role="tabpanel" aria-labelledby="pills-energy-tab-custom">
-                <div class="media">
-                  <img class="mr-3 w-25 rounded" src="../../../../images/samples/300x300/11.jpg" alt="sample image">
-                  <div class="media-body">
-                    <p>
-                        Finding a needle in a haystack isn't hard when every straw is computerized. You're a killer. I catch killers. 
-                        I will not kill my sister. I will not kill my sister. I will not kill my sister. Rorschach would say you have a hard time relating to others.
-                    </p>
+                <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
+                  <h4 class="card-title mb-0">Visite Guidé</h4>
+        
+                  <div style="margin-left : 400px" class="d-flex">
+                    <input id="search_input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" onclick="searchTable()">Search</button>
                   </div>
                 </div>
+                <div style="overflow-x:auto;">
+                  <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-hover">
+                      <thead class='thead-light'>
+                          <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Site_id</th>
+                              <th scope="col">URL</th>
+                              <th scope="col">Region</th>
+                              <th scope="col">Deligation</th>
+                              <th scope="col">Action</th>
+                          
+                          </tr>
+                      </thead>
+  
+                      <tbody>
+                          {% for data in visite %}
+                          <tr>
+                              <th scope="row"> {{ data.0 }} </th>
+                              <td> {{ data.1 }} </td>
+                              <td> {{ data.9 }} </td>
+                              <td> {{ data.2 }} </td>
+                              <td> {{ data.3 }} </td>
+                              <td> {{ data.4 }} </td>
+                              <td> 
+                                  <a href="/edit_cel/{{data.0}}" data-toggle="modal" data-target="#edit{{data.0}}">
+                                      <i class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                  </a>
+                                  <a href="/delete_cel/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                      <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                  </a>
+                              </td>
+                              
+                          </tr>
+                          <div class="modal fade" id="edit{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                              <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="ModalLabel">Update Cellule</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <form action="{{ url_for('editCellule', cel_id=data.0) }}" method="POST">
+                                      <div class="form-group">
+                                          <label for="Site_id" class="col-form-label">Site_id</label>
+                                          <input value="{{data.1}}" id="Site_id" name="Site_id" type="text" class="form-control" />
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="name" class="col-form-label">Cellule_Name</label>
+                                          <input value="{{data.10}}" id="Name" name="Name" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="x" class="col-form-label">Azimuth</label>
+                                          <input value="{{data.2}}" id="Azimuth" name="Azimuth" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="y" class="col-form-label">Bande</label>
+                                          <input value="{{data.3}}" id="Bande" name="Bande"  type="text" class="form-control"/>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="Capacité" class="col-form-label">Technologie</label>
+                                          <select id="Technologie" name="Technologie" class="form-control">
+                                              <option value="{{data.4}}">{{data.4}}</option>
+                                              <option value="4G">4G</option>
+                                              <option value="3G">3G</option>
+                                              <option value="2G">2G</option>
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireO" class="col-form-label">RNC</label>
+                                          <input value="{{data.5}}" id="RNC" name="RNC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">TCH</label>
+                                          <input value="{{data.6}}" id="TCH" name="TCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Delegation</label>
+                                          <select id="Delegation" name="Delegation" class="form-control">
+                                              <option value="{{data.7}}">{{data.7}}</option>
+                                              {% for i in listDelegation %}
+                                                  <option value="{{i[2]}}"> {{i[2]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="rg_id" class="col-form-label">Region</label>
+                                          <select id="Region" name="Region" class="form-control">
+                                              <option value="{{data.8}}">{{data.8}}</option>
+                                              {% for i in Region %}
+                                                  <option value="{{i[1]}}"> {{i[1]}} </option>
+                                              {% endfor %}
+                                              </select>
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">Antene</label>
+                                          <input value="{{data.10}}" id="Antene" name="Antene" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BSC</label>
+                                          <input value="{{data.11}}"  id="BSC" name="BSC" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">BCH</label>
+                                          <input value="{{data.12}}" id="BCH" name="BCH" type="text" class="form-control" />
+                                          </div>
+                                          <div class="form-group">
+                                          <label for="paireL" class="col-form-label">LAC</label>
+                                          <input value="{{data.13}}" id="LAC" name="LAC" type="text" class="form-control" />
+                                          </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="submit" class="btn btn-success">Update</button>
+                                      <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                  </div>
+                              </form>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      
+                      </tbody>
+  
+  
+                  </table>
+                </div>
+              <nav style="margin-top : 15px">
+                <ul class="pagination separated pagination-danger">
+                    {{pagination.links}}
+                </ul>
+              </nav>
               </div>
             </div>
           </div>

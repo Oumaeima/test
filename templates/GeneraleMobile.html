@@ -19,162 +19,165 @@
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info">
                 <div style="overflow-x:auto;">
-                    <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nom</th>
-                                <th scope="col">Accés</th>
-                                <th scope="col">Date_S</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">HBA</th>
-                                <th scope="col">Locataire</th>
-                                <th scope="col">Loyer</th>
-                                <th scope="col">Surface_S</th>
-                                <th scope="col">Surface_U</th>
-                                <th scope="col">Surface_D</th>
-                                <th scope="col">Région</th>
-                                <th scope="col">Déligation</th>
-                                <th scope="col">Fournisseur</th>
-                                <th scope="col">Action</th>
-                            
-                            </tr>
-                        </thead>
-        
-                        <tbody>
-                            {% for data in site %}
-                            <tr>
-                                <th scope="row"> {{ data.0 }} </th>
-                                <td> {{ data.1 }} </td>
-                                <td> {{ data.2 }} </td>
-                                <td> {{ data.3 }} </td>
-                                <td> {{ data.4 }} </td>
-                                <td> {{ data.5 }} </td>
-                                <td> {{ data.6 }} </td>
-                                <td> {{ data.7 }} </td>
-                                <td> {{ data.8 }} </td>
-                                <td> {{ data.9 }} </td>
-                                <td> {{ data.10 }} </td>
-                                <td> {{ data.11 }} </td>
-                                <td> {{ data.12 }} </td>
-                                <td> {{ data.13 }} </td>
-                                <td> 
-
-                                  <a href="/detail_site/{{data.0}}" >
-                                    <i class="icon-user-female text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View"></i>
-                                  </a>
-                                    <a href="/edit_site/{{data.0}}" data-toggle="modal" data-target="#site{{data.0}}">
-                                        <i style="margin-left : 6px" class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
-                                    </a>
-                                    <a href="/delete_site/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
-                                        <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
-                                    </a>
-                            
-                                </td>
+                    <div class="table-responsive">
+                        <table style="margin-top : 16px" id="dtHorizontalExample" class="table table-hover">
+                            <thead class='thead-light'>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Accés</th>
+                                    <th scope="col">Date_S</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">HBA</th>
+                                    <th scope="col">Locataire</th>
+                                    <th scope="col">Loyer</th>
+                                    <th scope="col">Surface_S</th>
+                                    <th scope="col">Surface_U</th>
+                                    <th scope="col">Surface_D</th>
+                                    <th scope="col">Région</th>
+                                    <th scope="col">Déligation</th>
+                                    <th scope="col">Fournisseur</th>
+                                    <th scope="col">Action</th>
                                 
-                            </tr>
-
-                        <d class="modal fade" id="site{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Update Site</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                        <form action="{{ url_for('editSite', site_id=data.0) }}" method="POST">
-                                            
-                                            <div class="form-group">
-                                                <label for="Nom_Site" class="col-form-label">Nom Site</label>
-                                                <input value="{{data.1}}" id="Nom_Site" name="Nom_Site" type="text" class="form-control" /> 
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="Accés" class="col-form-label">Accés </label>
-                                                <select id="Accés" name="Accés" class="form-control">
-                                                    <option value="{{data.2}}">{{data.1}}</option>
-                                                    <option value="Fibre">Fibre</option>
-                                                    <option value="LS">LS</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Date_Service" class="col-form-label">Date mise en Service</label>
-                                                <input value="{{data.3}}" id="Date_Service" name="Date_Service"  type="date" class="form-control"/>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Type_Station" class="col-form-label">Type Station</label>
-                                                <select id="Type_Station" name="Type_Station" class="form-control">
-                                                    <option value="{{data.4}}">{{data.2}}</option>
-                                                    <option>MAT</option>
-                                                    <option>Pylone</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="HBA" class="col-form-label">HBA</label>
-                                                <input value="{{data.5}}" id="HBA" name="HBA" type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Surface_Site" class="col-form-label">Surface Site</label>
-                                                <input value="{{data.6}}" id="Surface_Site" name="Surface_Site" type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Locataire" class="col-form-label">Locataire</label>
-                                                <input value="{{data.7}}" id="Locataire" name="Locataire" type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Surface_Utilise" class="col-form-label">Surface Utilisé</label>
-                                                <input value="{{data.8}}" id="Surface_Utilise" name="Surface_Utilise" type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Loyer_Actuel" class="col-form-label">Loyer Actuel</label>
-                                                <input value="{{data.9}}" id="Loyer_Actuel" name="Loyer_Actuel" type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Surface_Disponible" class="col-form-label">Surface Disponible</label>
-                                                <input value="{{data.10}}" id="Surface_Disponible" name="Surface_Disponible" type="text" class="form-control" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Region" class="col-form-label">Région</label>
-                                                <select id="Region" name="Region" class="form-control">
-                                                    <option>{{data.11}}</option>
-                                                    {% for i in Region %}
-                                                    <option value="{{i[1]}}"> {{i[1]}} </option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="Delegation" class="col-form-label">Déligation</label>
-                                                <select id="Delegation" name="Delegation" class="form-control">
-                                                    <option>{{data.12}}</option>
-                                                    {% for i in listDelegation %}
-                                                    <option value="{{i[2]}}"> {{i[2]}} </option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Fournisseur" class="col-form-label">Fournisseur</label>
-                                                <input value="{{data.13}}" id="Fournisseur" name="Fournisseur" type="text" class="form-control" />
-                                            </div>
+                                </tr>
+                            </thead>
+            
+                            <tbody>
+                                {% for data in site %}
+                                <tr>
+                                    <th scope="row"> {{ data.0 }} </th>
+                                    <td> {{ data.1 }} </td>
+                                    <td> {{ data.2 }} </td>
+                                    <td class="col-md-6"> {{ data.3 }} </td>
+                                    <td> {{ data.4 }} </td>
+                                    <td> {{ data.5 }} </td>
+                                    <td> {{ data.6 }} </td>
+                                    <td> {{ data.7 }} </td>
+                                    <td> {{ data.8 }} </td>
+                                    <td> {{ data.9 }} </td>
+                                    <td> {{ data.10 }} </td>
+                                    <td> {{ data.11 }} </td>
+                                    <td> {{ data.12 }} </td>
+                                    <td> {{ data.13 }} </td>
+                                    <td> 
+    
+                                      <a href="/detail_site/{{data.0}}" >
+                                        <i class="icon-user-female text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View"></i>
+                                      </a>
+                                        <a href="/edit_site/{{data.0}}" data-toggle="modal" data-target="#site{{data.0}}">
+                                            <i style="margin-left : 6px" class="icon-cursor-move text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                        </a>
+                                        <a href="/delete_site/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                            <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                        </a>
+                                
+                                    </td>
                                     
-                                        <div class="modal-footer">
-                                        <button type="submit" class="btn btn-success">Update</button>
-                                        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </form>
-                                        </div>
-                                </div>
-                                  </div>
-
-
-                            {% endfor %}
-                        
-                        </tbody>
-        
-        
-                    </table>
+                                </tr>
+    
+                            <d class="modal fade" id="site{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="ModalLabel">Update Site</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <form action="{{ url_for('editSite', site_id=data.0) }}" method="POST">
+                                                
+                                                <div class="form-group">
+                                                    <label for="Nom_Site" class="col-form-label">Nom Site</label>
+                                                    <input value="{{data.1}}" id="Nom_Site" name="Nom_Site" type="text" class="form-control" /> 
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label for="Accés" class="col-form-label">Accés </label>
+                                                    <select id="Accés" name="Accés" class="form-control">
+                                                        <option value="{{data.2}}">{{data.1}}</option>
+                                                        <option value="Fibre">Fibre</option>
+                                                        <option value="LS">LS</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Date_Service" class="col-form-label">Date mise en Service</label>
+                                                    <input value="{{data.3}}" id="Date_Service" name="Date_Service"  type="date" class="form-control"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Type_Station" class="col-form-label">Type Station</label>
+                                                    <select id="Type_Station" name="Type_Station" class="form-control">
+                                                        <option value="{{data.4}}">{{data.2}}</option>
+                                                        <option>MAT</option>
+                                                        <option>Pylone</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="HBA" class="col-form-label">HBA</label>
+                                                    <input value="{{data.5}}" id="HBA" name="HBA" type="text" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Surface_Site" class="col-form-label">Surface Site</label>
+                                                    <input value="{{data.6}}" id="Surface_Site" name="Surface_Site" type="text" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Locataire" class="col-form-label">Locataire</label>
+                                                    <input value="{{data.7}}" id="Locataire" name="Locataire" type="text" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Surface_Utilise" class="col-form-label">Surface Utilisé</label>
+                                                    <input value="{{data.8}}" id="Surface_Utilise" name="Surface_Utilise" type="text" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Loyer_Actuel" class="col-form-label">Loyer Actuel</label>
+                                                    <input value="{{data.9}}" id="Loyer_Actuel" name="Loyer_Actuel" type="text" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Surface_Disponible" class="col-form-label">Surface Disponible</label>
+                                                    <input value="{{data.10}}" id="Surface_Disponible" name="Surface_Disponible" type="text" class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Region" class="col-form-label">Région</label>
+                                                    <select id="Region" name="Region" class="form-control">
+                                                        <option>{{data.11}}</option>
+                                                        {% for i in Region %}
+                                                        <option value="{{i[1]}}"> {{i[1]}} </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label for="Delegation" class="col-form-label">Déligation</label>
+                                                    <select id="Delegation" name="Delegation" class="form-control">
+                                                        <option>{{data.12}}</option>
+                                                        {% for i in listDelegation %}
+                                                        <option value="{{i[2]}}"> {{i[2]}} </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Fournisseur" class="col-form-label">Fournisseur</label>
+                                                    <input value="{{data.13}}" id="Fournisseur" name="Fournisseur" type="text" class="form-control" />
+                                                </div>
+                                        
+                                            <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Update</button>
+                                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                            </div>
+                                    </div>
+                                      </div>
+    
+    
+                                {% endfor %}
+                            
+                            </tbody>
+            
+            
+                        </table>
+                    </div>
+                   
 
                 </div>
                 <nav style="margin-top : 15px">
@@ -241,7 +244,7 @@
                                     <i class="icon-user-female text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View"></i>
                                   </a>
                                     <a href="/edit_site/${usedSites[i][0]}" data-toggle="modal" data-target="#site${usedSites[i][0]}">
-                                        <i style="margin-left : 6px" class="icon-cursor-move text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                        <i style="margin-left : 6px" class="icon-cursor-move text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
                                     </a>
                                     <a href="/delete_site/${usedSites[i][0]}" onclick="return confirm('Are You Sure For Delete?')">
                                         <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
@@ -259,7 +262,6 @@
         <li class="page-item" id="previous">
         <span class="page-link"> « </span>
         </li>
-
         <li class="page-item" id="next">
         <a class="page-link"  aria-label="Next"
             ><span aria-hidden="true">»</span><span class="sr-only">Next</span></a
@@ -280,7 +282,7 @@
         let element;
         for(var i = 1; i < offset+1; i++){
             var x = document.getElementById(i-1)
-            if(x && i==page){
+            if(x){
                 $(`
                     <li class="page-item active" id="${i}" class"remove">
                     <a class="page-link" >${i} <span class="sr-only"> (current) </span></a>

@@ -42,9 +42,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group row">
-                <label for="Name" class="col-sm-3 col-form-label"
-                  >Cellule_Name</label
-                >
+                <label for="Name" class="col-sm-3 col-form-label">Cellule_Name</label>
                 <div class="col-sm-9">
                   <input
                     id="Name"
@@ -110,13 +108,10 @@
             <div class="col-md-6">
               <div class="form-group row">
                 <label for="RNC" class="col-sm-3 col-form-label">RNC</label>
-
-                {% if Technologie == '2G'%} {{ RNC(readonly=true) }} {% else %}
-
                 <div class="col-sm-9">
                   <input id="RNC" name="RNC" type="text" class="form-control" />
                 </div>
-                {% endif %}
+               
               </div>
             </div>
           </div>
@@ -185,7 +180,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group row">
-                <label for="BSC" class="col-sm-3 col-form-label">BSC</label>
+                <label for="BSC" class="col-sm-3 col-form-label">PSC</label>
                 <div class="col-sm-9">
                   <input id="BSC" name="BSC" type="text" class="form-control" />
                 </div>
@@ -228,17 +223,17 @@
     let RNC = document.getElementById("RNC");
     let LAC = document.getElementById("LAC");
     if (technology.value == "2G") {
-      RNC.disabled = true;
-      LAC.disabled = true;
-      TCH.disabled = false;
-      BSC.disabled = false;
-      BCH.disabled = false;
+      RNC.readOnly  = true;
+      LAC.readOnly  = true;
+      TCH.readOnly  = false;
+      BSC.readOnly  = true;
+      BCH.readOnly  = false;
     } else {
-      TCH.disabled = true;
-      BSC.disabled = true;
-      BCH.disabled = true;
-      RNC.disabled = false;
-      LAC.disabled = false;
+      TCH.readOnly  = true;
+      BSC.readOnly  = true;
+      BCH.readOnly  = true;
+      RNC.readOnly  = false;
+      LAC.readOnly  = false;
     }
   };
 </script>

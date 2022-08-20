@@ -124,8 +124,13 @@ def addSiteRadio():
         delegation = request.form['Delegation']
         fournisseur = request.form['Fournisseur']
         
+        siteidCursor.execute("SELECT Nom_Site FROM site_radio WHERE Nom_Site=%s",(sitename,))
+        name = siteidCursor.fetchone()
+
         if  sitename == "" or acces == "" or  dates == "" or types == "" or hba == "" or surfaceS == "" or locataire == "" or surfaceU == "" or loyer == "" or surfaceD == "" or region == "" or delegation == "" or fournisseur == "":
             flash("Vérifier les champs obligatoire")
+        elif name:
+            flash("nom du site existe déja")  
 
         else:
             cursor.execute("INSERT INTO site_radio(Nom_Site, Accés, Date_Service, Type_Station, HBA, Surface_Site, Locataire, Surface_Utilise, Loyer_Actuel, Surface_Disponible, Region, Deligation, Fournisseur) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(sitename, acces, dates, types, hba, surfaceS, locataire, surfaceU, loyer, surfaceD, region, delegation, fournisseur))
@@ -136,9 +141,9 @@ def addSiteRadio():
             
            ## return redirect(url_for("addCellule"))
             return render_template("Cellule.html", Region=Region, listDelegation=listDelegation, id=id)
-        
+    return render_template("ConfigMobile.html", Region=Region, listDelegation=listDelegation)    
 
-    return render_template("Site.html", Region=Region, listDelegation=listDelegation)
+    
 
 
 
@@ -161,6 +166,65 @@ def siteDetail(site_id):
     
     return render_template("DetailSite.html",site=site, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id) 
 
+
+## Detail Documentation
+@app.route('/detail_doc/<int:site_id>', methods=['GET','POST'])
+@login_required
+def documentationDetail(site_id):
+    
+    cursor.execute("SELECT * FROM document_mobile WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
+    id = cursor.fetchall()
+
+    page = request.args.get(get_page_parameter(), type=int, default=1)  
+    per_page = 1
+    offset = (page - 1) * per_page
+    pagination = Pagination(page=page, per_page=per_page,total=len(id))   
+    numrows = int(cursor.rowcount)
+
+    cursor.execute("SELECT * FROM document_mobile WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (site_id, per_page, offset,))
+    site = cursor.fetchall()
+    
+    return render_template("DetailSite.html",doc=site, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id) 
+
+
+## Detail Intervention
+@app.route('/detail_int/<int:site_id>', methods=['GET','POST'])
+@login_required
+def interventionDetail(site_id):
+    
+    cursor.execute("SELECT * FROM intervention WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
+    id = cursor.fetchall()
+
+    page = request.args.get(get_page_parameter(), type=int, default=1)  
+    per_page = 1
+    offset = (page - 1) * per_page
+    pagination = Pagination(page=page, per_page=per_page,total=len(id))   
+    numrows = int(cursor.rowcount)
+
+    cursor.execute("SELECT * FROM intervention WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (site_id, per_page, offset,))
+    site = cursor.fetchall()
+    
+    return render_template("DetailSite.html",int=site, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id) 
+
+
+## Detail visite guider
+@app.route('/detail_visite/<int:site_id>', methods=['GET','POST'])
+@login_required
+def visiteDetail(site_id):
+    
+    cursor.execute("SELECT * FROM visite_mobile WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
+    id = cursor.fetchall()
+
+    page = request.args.get(get_page_parameter(), type=int, default=1)  
+    per_page = 1
+    offset = (page - 1) * per_page
+    pagination = Pagination(page=page, per_page=per_page,total=len(id))   
+    numrows = int(cursor.rowcount)
+
+    cursor.execute("SELECT * FROM visite_mobile WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (site_id, per_page, offset,))
+    site = cursor.fetchall()
+    
+    return render_template("DetailSite.html",visite=site, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id) 
 
 
 ### Edit Site
@@ -224,17 +288,25 @@ def addCellule():
         BCH = request.form['BCH']
         LAC = request.form['LAC']
         region = request.form['Region']
+
+        siteidCursor.execute("SELECT Site_id FROM site_radio WHERE Site_id=%s",(site_id,))
+        id = siteidCursor.fetchone()
+
+        cursor.execute("SELECT Name FROM cellule WHERE Name=%s",(cel_name,))
+        name = cursor.fetchone()
         
-        
-        if  site_id == "" or Azimuth == "" or  Bande == "" or Technologie == "Select Technologie" or RNC == "" or TCH == "" or Delegation == "Select Delegation" or Region == "Select Region" or cel_name == "" or Antene == "" or BSC == "" or BCH == "" or LAC == "":
+        if  Azimuth == "" or  Bande == "" or Technologie == "Select Technologie" or Delegation == "Select Delegation" or Region == "Select Region" or cel_name == "" or Antene == "":
             flash("Vérifier les champs obligatoire")
+
+        elif name:
+            flash("nom du cellule existe déja") 
 
         else:
             cursor.execute("INSERT INTO cellule (site_id, Azimuth, Bande, Technologie, RNC, TCH, Delegation, Region, Name, Antene, BSC, BCH, LAC) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(site_id, Azimuth, Bande, Technologie, RNC, TCH, Delegation, region, cel_name, Antene, BSC, BCH, LAC))
             connection.commit()
-            siteidCursor.execute("SELECT Site_id FROM site_radio WHERE Site_id=%s",(site_id,))
-            id = siteidCursor.fetchone()
+            
             return render_template("Cellule.html", Region=Region, listDelegation=listDelegation, id=id) 
+    return render_template("Cellule.html", Region=Region, listDelegation=listDelegation, id=id) 
 
 
 ### Edit Cellule
@@ -293,30 +365,6 @@ def deleteCellule(cel_id):
     
     return redirect(url_for('generaleMobile')) 
 
-
-
-## login
-@app.route('/login', methods=['GET','POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        cursor.execute("SELECT * FROM admin WHERE email=%s AND password=%s", (email, password))
-        record = cursor.fetchone()
-
-        if record:
-            session['loggedin'] = True
-            session['email'] = record[4]
-            return redirect(url_for('index'))
-        else:
-            return flash("error")
-    return render_template("Login.html")
-    
-### logout    
-@app.route('/logout')
-def logout():
-    session.pop('loggedin', None)
-    return redirect(url_for('login'))
 
 
 ### documentation
@@ -609,6 +657,53 @@ def deletePC(pc_id):
     connection.commit()
     
     return redirect(url_for('generaleAF')) 
+
+
+## edit profile
+@app.route('/profile/<int:id>', methods=['GET','POST'])
+@login_required
+def profile(id):
+    if request.method == 'POST':
+        nom = request.form['nom']
+        prenom = request.form['prenom']
+        email = request.form['email']
+
+        cursor.execute("""
+              UPDATE admin SET nom=%s, prenom=%s, email=%s WHERE id=%s
+              """, (nom, prenom, email,id))
+        connection.commit()
+        return redirect(url_for('index'))
+    return render_template('Profile.html', idUser=id)
+
+
+## login
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        cursor.execute("SELECT * FROM admin WHERE email=%s AND password=%s", (email, password))
+        record = cursor.fetchone()
+
+        if record:
+            session['loggedin'] = True
+            session['id'] = record[0]
+            session['nom'] = record[1]
+            session['prenom'] = record[2]
+            session['email'] = record[3]
+            session['password'] = record[4]
+            
+            return redirect(url_for('index'))
+        else:
+            return flash("error")
+    return render_template("Login.html")
+    
+### logout    
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    return redirect(url_for('login'))
+
 
 
 if __name__ == '__main__':

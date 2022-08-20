@@ -199,12 +199,12 @@
           <li class="nav-item nav-profile">
             <div class="nav-link">
               <div class="profile-image">
-                <img src="static/images/faces/face10.jpg" alt="image"/>
+                <img src="static/images/faces/user.png" alt="image"/>
                 <span class="online-status online"></span> <!--change class online to offline or busy as needed-->
               </div>
               <div class="profile-name">
                 <p class="name">
-                  Amani Abidi
+                  {{session['nom']}} {{session['prenom']}}
                 </p>
                 <p class="designation">
                   Super Admin
