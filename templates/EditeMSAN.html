@@ -1,0 +1,69 @@
+{%extends 'Navbar.html'%}
+<link
+  href="{{url_for('static', filename = 'styles/css/style.css')}}"
+  rel="stylesheet"
+/>
+
+{% block title %}Acces Mobile{% endblock %} {%block content%}
+
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card shadow p-5">
+                <div class="card-body">
+                    <h4 class="card-title">Editer MSAN</h4>
+
+                    {% with messages = get_flashed_messages() %} 
+                        {% if messages %} 
+                            {% for msg in messages %}
+                                <div style="margin-top: 6px" class="alert alert-danger" role="alert">
+                                {{msg}}
+                                </div>
+                            {% endfor %} 
+                        {% endif %} 
+                    {% endwith %}
+                    {% for data in msan%}
+
+                    <form method="post" action="{{url_for('editMSAN', msan_id=data.0)}}"> 
+                        <div class="form-group">
+                            <label for="rg_id">RG_ID</label>
+                            <input value="{{data.1}}" type="text" class="form-control" id="rg_id" name="rg_id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input value="{{data.2}}" type="text" class="form-control" id="name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="x">Mesure X</label>
+                            <input value="{{data.3}}" type="text" class="form-control" id="x" name="x">
+                        </div>
+                        <div class="form-group">
+                            <label for="y">Mesure Y</label>
+                            <input value="{{data.4}}" type="text" class="form-control" id="y" name="y">
+                        </div>
+                        <div class="form-group">
+                            <label for="NB_ports">NB_ports</label>
+                            <input value="{{data.5}}" type="text" class="form-control" id="NB_ports" name="NB_ports">
+                        </div>
+                        <div class="form-group">
+                            <label for="paireO">Paire Occupé</label>
+                            <input value="{{data.6}}" type="text" class="form-control" id="paireO" name="paireO">
+                        </div>
+                        <div class="form-group">
+                            <label for="paireL">Paire Libre</label>
+                            <input value="{{data.7}}" type="text" class="form-control" id="paireL" name="paireL">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success col-12">Modifier</button>
+                           
+                        </div>
+                        
+                        
+                        {% endfor %}
+                    </form>
+                    
+                </div>  
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

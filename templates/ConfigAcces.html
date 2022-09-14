@@ -7,21 +7,8 @@
     <div class="card">
       <div class="card-body">
         <div class="wrapper d-block d-sm-flex align-items-center justify-content-between">
-          <h4 class="card-title mb-0">Configuration Accés Fixe</h4>
-          <ul class="nav nav-tabs tab-solid tab-solid-primary mb-0" id="myTab" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-expanded="true">RG</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="sg-tab" data-toggle="tab" href="#sg" role="tab" aria-controls="sg">SG</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="msan-tab" data-toggle="tab" href="#msan" role="tab" aria-controls="msan">MSAN</a>
-          </li>
-            <li class="nav-item">
-              <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab" aria-controls="security">PC</a>
-            </li>
-          </ul>
+          <h4 class="card-title mb-0">Ajouter Répartition</h4>
+         
         </div>
         <div class="wrapper">
           <hr>
@@ -39,15 +26,15 @@
 
                 <div class="form-group">
                   <label for="name">Name</label>
-                  <input type="text" class="form-control" id="name" name="name" placeholder="Nom RG">
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Nom RG" required>
                 </div>
                 <div class="form-group">
                   <label for="x">Mesure X</label>
-                  <input type="text" class="form-control" id="x" name="x"  placeholder="Mesure X">
+                  <input type="text" class="form-control" id="x" name="x"  placeholder="Mesure X" required>
                 </div>
                 <div class="form-group">
                   <label for="y">Mesure Y</label>
-                  <input type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y">
+                  <input type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y" required>
                 </div>
                 <div class="form-group">
                   <label for="Region">Region</label>
@@ -69,8 +56,8 @@
                 </div>
                
                 <div class="form-group mt-5">
-                  <button type="submit" class="btn btn-success mr-2">Ajouter</button>
-                  <button type="reset" class="btn btn-outline-danger">Vider</button>
+                  <button type="submit" class="btn btn-success col-12">Ajouter</button>
+                  
                 </div>
               </form>
             </div><!-- tab content ends -->

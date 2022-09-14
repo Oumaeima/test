@@ -18,6 +18,9 @@ delegationCursor = connection.cursor(buffered=True)
 RGidCursor = connection.cursor(buffered=True)
 cursorSite = connection.cursor(buffered=True)
 cursorCell = connection.cursor(buffered=True)
+docCursor = connection.cursor(buffered=True)
+intCursor = connection.cursor(buffered=True)
+visiteCursor = connection.cursor(buffered=True)
 
 cursor2.execute("SELECT * FROM region")
 Region = cursor2.fetchall()
@@ -152,40 +155,40 @@ def addSiteRadio():
 @login_required
 def siteDetail(site_id):
     
-    cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
-    id = cursor.fetchall()
+    cursor.execute("SELECT * FROM cellule WHERE site_id=%s", (site_id,))
+    cellule = cursor.fetchall()
 
-    page = request.args.get(get_page_parameter(), type=int, default=1)  
-    per_page = 1
-    offset = (page - 1) * per_page
-    pagination = Pagination(page=page, per_page=per_page,total=len(id))   
-    numrows = int(cursor.rowcount)
+    docCursor.execute("SELECT * FROM document_mobile WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
+    doc = docCursor.fetchall()
 
-    cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (site_id, per_page, offset,))
-    site = cursor.fetchall()
+    visiteCursor.execute("SELECT * FROM visite_mobile WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
+    visite = cursor.fetchall()
+
+    intCursor.execute("SELECT * FROM intervention WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
+    intervention = cursor.fetchall()
     
-    return render_template("DetailSite.html",site=site, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id) 
+    return render_template("DetailSite.html",cellule=cellule, doc=doc, visite=visite, intervention=intervention, Region=Region, listDelegation=listDelegation) 
 
 
 ## Detail Documentation
-@app.route('/detail_doc/<int:site_id>', methods=['GET','POST'])
+@app.route('/edit_doc/<int:doc_id>', methods=['GET','POST'])
 @login_required
-def documentationDetail(site_id):
+def documentationEdit(doc_id):
+
+    if request.method == "POST":
+        Site_id = request.form['Site_id']
+        Delegation = request.form['Delegation']
+        region = request.form['Region']
+        Type = request.form['type']
+        document = request.form['documentation']
     
-    cursor.execute("SELECT * FROM document_mobile WHERE site_id=%s ORDER BY site_id ASC", (site_id,))
-    id = cursor.fetchall()
-
-    page = request.args.get(get_page_parameter(), type=int, default=1)  
-    per_page = 1
-    offset = (page - 1) * per_page
-    pagination = Pagination(page=page, per_page=per_page,total=len(id))   
-    numrows = int(cursor.rowcount)
-
-    cursor.execute("SELECT * FROM document_mobile WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (site_id, per_page, offset,))
-    site = cursor.fetchall()
-    
-    return render_template("DetailSite.html",doc=site, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id) 
-
+        cursor.execute("UPDATE document_mobile SET region=%s, delegation=%s, type_d=%s, documentation=%s WHERE id_d=%s ORDER BY site_id ASC", (region, Delegation, Type, document, doc_id,))
+        
+        docCursor.execute("SELECT * FROM document_mobile WHERE site_id=%s ORDER BY site_id ASC", (Site_id,))
+        doc = docCursor.fetchall()
+        
+        return render_template("DetailSite.html", doc_id=doc_id, doc=doc, Region=Region, listDelegation=listDelegation) 
+    return redirect(url_for('detail_site',doc_id=doc_id))
 
 ## Detail Intervention
 @app.route('/detail_int/<int:site_id>', methods=['GET','POST'])
@@ -275,7 +278,7 @@ def deleteSite(site_id):
 def addCellule():
     
     if request.method == 'POST':
-        site_id = request.form['site_id']
+        site_id = request.form['Site_id']
         Azimuth = request.form['Azimuth']
         Bande = request.form['Bande']
         Technologie = request.form['Technologie']
@@ -290,7 +293,7 @@ def addCellule():
         region = request.form['Region']
 
         siteidCursor.execute("SELECT Site_id FROM site_radio WHERE Site_id=%s",(site_id,))
-        id = siteidCursor.fetchone()
+        id_site = siteidCursor.fetchone()
 
         cursor.execute("SELECT Name FROM cellule WHERE Name=%s",(cel_name,))
         name = cursor.fetchone()
@@ -305,58 +308,53 @@ def addCellule():
             cursor.execute("INSERT INTO cellule (site_id, Azimuth, Bande, Technologie, RNC, TCH, Delegation, Region, Name, Antene, BSC, BCH, LAC) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(site_id, Azimuth, Bande, Technologie, RNC, TCH, Delegation, region, cel_name, Antene, BSC, BCH, LAC))
             connection.commit()
             
-            return render_template("Cellule.html", Region=Region, listDelegation=listDelegation, id=id) 
-    return render_template("Cellule.html", Region=Region, listDelegation=listDelegation, id=id) 
+            return redirect(url_for('generaleMobile'))
+    
 
 
 ### Edit Cellule
-@app.route('/edit_cel/<int:cel_id>', methods=['GET','POST'])
+@app.route('/edit/<string:cel_id>', methods=['GET','POST'])
 @login_required
-def editCellule(cel_id):
+def edit(cel_id):
+    
+    cursorCell.execute("SELECT * FROM cellule WHERE id=%s",(cel_id,))
+    cellule = cursorCell.fetchall()
+    return render_template("EditCellule.html", cellule=cellule, Region=Region, listDelegation=listDelegation,)
 
+
+### Edit Cellule
+@app.route('/edit_cel/<string:cel_id>', methods=['GET','POST'])
+@login_required
+def editCellule(cel_id): 
+    
     if request.method == "POST":
-        Site_id = request.form['Site_id']
+        Site_id = request.form['site_id']
         Azimuth = request.form['Azimuth']
         Bande = request.form['Bande']
-        Technologie = request.form['Technologie']
-        RNC = request.form['RNC']
-        TCH = request.form['TCH']
         Delegation = request.form['Delegation']
         cel_name = request.form['Name']
         Antene = request.form['Antene']
-        BSC = request.form['BSC']
-        BCH = request.form['BCH']
-        LAC = request.form['LAC']
         region = request.form['Region']
         
         cursor.execute("""
-              UPDATE cellule SET site_id=%s, Azimuth=%s, Bande=%s, Technologie=%s, RNC=%s, TCH=%s, Delegation=%s, Region=%s, Name=%s, Antene=%s, BSC=%s, BCH=%s, LAC=%s WHERE id=%s
-              """,              (Site_id, Azimuth, Bande, Technologie, RNC, TCH, Delegation, region, cel_name, Antene, BSC, BCH, LAC, cel_id))
+              UPDATE cellule SET Azimuth=%s, Bande=%s,  Delegation=%s, Region=%s, Name=%s, Antene=%s WHERE id=%s
+              """,(Azimuth, Bande, Delegation, region, cel_name, Antene, cel_id))
+        
         connection.commit()
-        #cursor.execute("SELECT * FROM cellule WHERE site_id=%s", (Site_id,))
-        #id = cursor.fetchall()
+        siteidCursor.execute("SELECT Site_id FROM site_radio WHERE Site_id=%s", (Site_id,))
+        site = siteidCursor.fetchone()
 
-        cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC", (Site_id,))
-        id = cursor.fetchall()
+        
 
-        page = request.args.get(get_page_parameter(), type=int, default=1)  
-        per_page = 1
-        offset = (page - 1) * per_page
-        pagination = Pagination(page=page, per_page=per_page,total=len(id))   
-        numrows = int(cursor.rowcount)
-
-        cursor.execute("SELECT * FROM cellule WHERE site_id=%s ORDER BY site_id ASC LIMIT %s OFFSET %s", (Site_id, per_page, offset,))
-        site = cursor.fetchall()
-    
-        return render_template("DetailSite.html",site=site, cel_id=cel_id, id=id, Region=Region, listDelegation=listDelegation, pagination=pagination, numrows=numrows,total=id)
+        return redirect(url_for('siteDetail', site_id=site))
         
-    return redirect(url_for('detail_site',cel_id=cel_id))
+    return redirect(url_for('siteDetail', site_id=site))
         
-        
+       
 
 
 ## Delete Cellule
-@app.route('/delete_cel/<int:cel_id>', methods=['GET','POST'])
+@app.route('/delete_cel/<string:cel_id>', methods=['GET','POST'])
 @login_required
 def deleteCellule(cel_id):
     
@@ -449,7 +447,7 @@ def addRepartition():
         else:
             cursor.execute("INSERT INTO repartition (nom, x, y, region, delegation) VALUES (%s,%s,%s,%s,%s)", (name, x, y, region, Delegation) )
             connection.commit()
-            cursor.close()
+            
             return redirect(url_for("generaleAF"))
 
     return render_template("ConfigAcces.html", Region=Region, listDelegation=listDelegation)
@@ -471,7 +469,7 @@ def editRepartition(rep_id):
               SET nom=%s, x=%s, y=%s , region=%s , delegation=%s WHERE id=%s
             """, (name, x, y, region, Delegation, rep_id))
         connection.commit()
-        cursor.close()
+        
         return redirect(url_for('generaleAF'))
 
 
@@ -558,19 +556,27 @@ def addMSAN():
         paireO = request.form['paireO']
         paireL = request.form['paireL']
         
-        if RG_ID == "Select RG_ID" or name == "" or x == "" or y == "" or NB_ports == "" or paireO == "" or paireL == "":
+        if name == "" or x == "" or y == "" or NB_ports == "" or paireO == "" or paireL == "":
             flash("Vérifier les champs obligatoire")
         else:
             cursor.execute("INSERT INTO msan (id_rg, nom, x, y, nb_ports, paire_occupe, paire_libre) VALUES (%s,%s,%s,%s,%s,%s,%s)", (RG_ID,name, x, y, NB_ports, paireO, paireL) )
             connection.commit()
             return redirect(url_for("generaleAF"))
-            
 
-    return render_template("ConfigAcces.html", rg_id=rg_id)
+
+### Redirect to edit msan
+@app.route('/edit_msan/<string:msan_id>', methods=['GET','POST'])
+@login_required
+def redirectEdit(msan_id):
+    
+    cursor.execute("SELECT * FROM msan WHERE id_m=%s",(msan_id,))
+    msan = cursor.fetchall()
+    return render_template("EditeMSAN.html", msan=msan)
+
 
 
 ### Edit MSAN
-@app.route('/edit_MSAN/<int:msan_id>', methods=['GET','POST'])
+@app.route('/edit_MSAN/<string:msan_id>', methods=['GET','POST'])
 @login_required
 def editMSAN(msan_id):
 
@@ -657,6 +663,21 @@ def deletePC(pc_id):
     connection.commit()
     
     return redirect(url_for('generaleAF')) 
+
+
+## Detail Site
+@app.route('/detail_repartition/<string:rg_id>', methods=['GET','POST'])
+@login_required
+def RGDetail(rg_id):
+    
+    cursor.execute("SELECT * FROM msan WHERE id_rg=%s", (rg_id,))
+    msan = cursor.fetchall()
+    cursor2.execute("SELECT * FROM sousrepartition WHERE id_rg=%s", (rg_id,))
+    sr = cursor2.fetchall()
+    
+    return render_template("DetailRG.html",msan=msan, sr=sr, Region=Region, listDelegation=listDelegation) 
+
+
 
 
 ## edit profile
