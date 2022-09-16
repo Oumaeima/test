@@ -29,7 +29,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Nom</th>
                                     <th scope="col">Accés</th>
-                                    <th class="col-md-6">Date_S</th>
+                                    <th class="col-md-6">Date_Service</th>
                                     <th scope="col">Type</th>
                                     <th scope="col">HBA</th>
                                     <th scope="col">Locataire</th>
@@ -62,18 +62,16 @@
                                     <td class="pt-3"> {{ data.11 }} </td>
                                     <td class="pt-3"> {{ data.12 }} </td>
                                     <td class="pt-3"> {{ data.13 }} </td>
-                                    <td class="col-lg-2"> 
-    
-                                      <a href="/detail_site/{{data.0}}" >
-                                        <i class="icon-user-female text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View"></i>
-                                      </a>
+                                    <td class="pt-3"> 
+                                        <a href="/detail_site/{{data.0}}" >
+                                            <i class="icon-user-female text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View"></i>
+                                        </a>
                                         <a href="/edit_site/{{data.0}}" data-toggle="modal" data-target="#site{{data.0}}">
-                                            <i style="margin-left : 6px" class="icon-cursor-move text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
+                                            <i class="icon-cursor-move text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
                                         </a>
                                         <a href="/delete_site/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
-                                            <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
+                                            <i class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
                                         </a>
-                                
                                     </td>
                                     
                                 </tr>

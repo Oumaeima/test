@@ -507,8 +507,15 @@ def addSR():
             return redirect(url_for("generaleAF"))
             
 
-    return render_template("ConfigAcces.html", rg_id=rg_id)
-
+### Redirect to edit msan
+@app.route('/edit_SR/<string:id_sr>', methods=['GET','POST'])
+@login_required
+def redirectEditSR(id_sr):
+    
+    cursor.execute("SELECT * FROM sousrepartition WHERE id_sr=%s",(id_sr,))
+    msan = cursor.fetchall()
+    return render_template("EditSR.html", msan=msan)
+  
 
 ## Edite Sous Repartition
 @app.route('/edit_sr/<int:sr_id>', methods=['GET','POST'])
@@ -607,6 +614,17 @@ def deleteMSAN(msan_id):
     connection.commit()
     
     return redirect(url_for('generaleAF')) 
+
+
+## Detail PC
+@app.route('/detail_pc', methods=['GET','POST'])
+@login_required
+def detailPC():
+    
+    cursor.execute("SELECT * FROM pc")
+    pc = cursor.fetchall()
+    
+    return render_template("GestionPC.html", pc=pc)
 
 
 ### Add PC

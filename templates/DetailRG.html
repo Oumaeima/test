@@ -72,7 +72,7 @@
                                     </td>
                                     
                                 </tr>
-                                <div class="modal fade"  id="add" tabindex="-2" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade"  id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                         <div class="modal-header">
@@ -83,40 +83,34 @@
                                         </div>
                                         <div class="modal-body">
                                             <form method="post" action="{{url_for('addMSAN')}}">
-                                                {% with messages = get_flashed_messages() %}
-                                                    {% if messages %}
-                                                      {% for msg in messages %}
-                                                        <div style="margin-top : 6px" class="alert alert-danger" role="alert"> {{msg}} </div>
-                                                      {% endfor %}
-                                                    {% endif %}
-                                                {% endwith %}
+                                            
                                                 <div class="form-group">
                                                   <label for="rg_id">RG_ID</label>
                                                   <input value="{{data.1}}" type="text" class="form-control" id="rg_id" name="rg_id" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                   <label for="name">Name</label>
-                                                  <input type="text" class="form-control" id="name" name="name" placeholder="Nom MSAN">
+                                                  <input type="text" class="form-control" id="name" name="name" placeholder="Nom MSAN" required>
                                                 </div>
                                                 <div class="form-group">
                                                   <label for="x">Mesure X</label>
-                                                  <input type="text" class="form-control" id="x" name="x"  placeholder="Mesure X">
+                                                  <input type="text" class="form-control" id="x" name="x"  placeholder="Mesure X" required>
                                                 </div>
                                                 <div class="form-group">
                                                   <label for="y">Mesure Y</label>
-                                                  <input type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y">
+                                                  <input type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y" required>
                                                 </div>
                                                 <div class="form-group">
                                                   <label for="NB_ports">NB_ports</label>
-                                                  <input type="text" class="form-control" id="NB_ports" name="NB_ports"  placeholder="Nombre de ports">
+                                                  <input type="text" class="form-control" id="NB_ports" name="NB_ports"  placeholder="Nombre de ports" required>
                                                 </div>
                                                 <div class="form-group">
                                                   <label for="paireO">Paire Occupé</label>
-                                                  <input type="text" class="form-control" id="paireO" name="paireO"  placeholder="Paire Occupé">
+                                                  <input type="text" class="form-control" id="paireO" name="paireO"  placeholder="Paire Occupé" required>
                                                 </div>
                                                 <div class="form-group">
                                                   <label for="paireL">Paire Libre</label>
-                                                  <input type="text" class="form-control" id="paireL" name="paireL"  placeholder="Paire Occupé">
+                                                  <input type="text" class="form-control" id="paireL" name="paireL"  placeholder="Paire Occupé" required>
                                                 </div>
                                                 
                                                 
@@ -130,63 +124,7 @@
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="EditMSAN" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="ModalLabel">Editer MSAN</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form method="post" action="{{url_for('addMSAN')}}">
-                                                {% with messages = get_flashed_messages() %}
-                                                    {% if messages %}
-                                                      {% for msg in messages %}
-                                                        <div style="margin-top : 6px" class="alert alert-danger" role="alert"> {{msg}} </div>
-                                                      {% endfor %}
-                                                    {% endif %}
-                                                {% endwith %}
-                                                <div class="form-group">
-                                                  <label for="rg_id">RG_ID</label>
-                                                  <input value="{{data.1}}" type="text" class="form-control" id="rg_id" name="rg_id" readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                  <label for="name">Name</label>
-                                                  <input value="{{data.2}}" type="text" class="form-control" id="name" name="name">
-                                                </div>
-                                                <div class="form-group">
-                                                  <label for="x">Mesure X</label>
-                                                  <input value="{{data.3}}" type="text" class="form-control" id="x" name="x">
-                                                </div>
-                                                <div class="form-group">
-                                                  <label for="y">Mesure Y</label>
-                                                  <input value="{{data.4}}" type="text" class="form-control" id="y" name="y">
-                                                </div>
-                                                <div class="form-group">
-                                                  <label for="NB_ports">NB_ports</label>
-                                                  <input value="{{data.5}}" type="text" class="form-control" id="NB_ports" name="NB_ports">
-                                                </div>
-                                                <div class="form-group">
-                                                  <label for="paireO">Paire Occupé</label>
-                                                  <input value="{{data.6}}" type="text" class="form-control" id="paireO" name="paireO">
-                                                </div>
-                                                <div class="form-group">
-                                                  <label for="paireL">Paire Libre</label>
-                                                  <input value="{{data.7}}" type="text" class="form-control" id="paireL" name="paireL">
-                                                </div>
-                                                
-                                                
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-success">Ajouter</button>
-                                                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 {% endfor %}
                             
                             </tbody>
@@ -251,80 +189,41 @@
                                       </button>
                                   </div>
                                   <div class="modal-body">
-                                      <form action="{{ url_for('editCellule', cel_id=data.0) }}" method="POST">
-                                      <div class="form-group">
-                                          <label for="Site_id" class="col-form-label">Site_id</label>
-                                          <input value="{{data.1}}" id="Site_id" name="Site_id" type="text" class="form-control" />
-                                      </div>
-                                      <div class="form-group">
-                                          <label for="name" class="col-form-label">Cellule_Name</label>
-                                          <input value="{{data.10}}" id="Name" name="Name" type="text" class="form-control" />
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="x" class="col-form-label">Azimuth</label>
-                                          <input value="{{data.2}}" id="Azimuth" name="Azimuth" type="text" class="form-control" />
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="y" class="col-form-label">Bande</label>
-                                          <input value="{{data.3}}" id="Bande" name="Bande"  type="text" class="form-control"/>
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="Capacité" class="col-form-label">Technologie</label>
-                                          <select id="Technologie" name="Technologie" class="form-control">
-                                              <option value="{{data.4}}">{{data.4}}</option>
-                                              <option value="4G">4G</option>
-                                              <option value="3G">3G</option>
-                                              <option value="2G">2G</option>
-                                              </select>
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="paireO" class="col-form-label">RNC</label>
-                                          <input value="{{data.5}}" id="RNC" name="RNC" type="text" class="form-control" />
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="paireL" class="col-form-label">TCH</label>
-                                          <input value="{{data.6}}" id="TCH" name="TCH" type="text" class="form-control" />
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="rg_id" class="col-form-label">Delegation</label>
-                                          <select id="Delegation" name="Delegation" class="form-control">
-                                              <option value="{{data.7}}">{{data.7}}</option>
-                                              {% for i in listDelegation %}
-                                                  <option value="{{i[2]}}"> {{i[2]}} </option>
-                                              {% endfor %}
-                                              </select>
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="rg_id" class="col-form-label">Region</label>
-                                          <select id="Region" name="Region" class="form-control">
-                                              <option value="{{data.8}}">{{data.8}}</option>
-                                              {% for i in Region %}
-                                                  <option value="{{i[1]}}"> {{i[1]}} </option>
-                                              {% endfor %}
-                                              </select>
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="paireL" class="col-form-label">Antene</label>
-                                          <input value="{{data.10}}" id="Antene" name="Antene" type="text" class="form-control" />
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="paireL" class="col-form-label">BSC</label>
-                                          <input value="{{data.11}}"  id="BSC" name="BSC" type="text" class="form-control" />
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="paireL" class="col-form-label">BCH</label>
-                                          <input value="{{data.12}}" id="BCH" name="BCH" type="text" class="form-control" />
-                                          </div>
-                                          <div class="form-group">
-                                          <label for="paireL" class="col-form-label">LAC</label>
-                                          <input value="{{data.13}}" id="LAC" name="LAC" type="text" class="form-control" />
-                                          </div>
-                                  </div>
-                                  <div class="modal-footer">
-                                      <button type="submit" class="btn btn-success">Update</button>
-                                      <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                                  </div>
-                              </form>
+                                    <form method="post" action="{{url_for('addSR')}}">
+                                        <div class="form-group">
+                                          <label for="rg_id">RG_ID</label>
+                                          <input value="{{data.1}}" type="text" class="form-control" id="rg_id" name="rg_id" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="name">Name</label>
+                                          <input type="text" class="form-control" id="name" name="name" placeholder="Nom SR" required>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="x">Mesure X</label>
+                                          <input type="text" class="form-control" id="x" name="x"  placeholder="Mesure X" required>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="y">Mesure Y</label>
+                                          <input type="text" class="form-control" id="y" name="y"  placeholder="Mesure Y" required>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="Capacité">Capacité</label>
+                                          <input type="text" class="form-control" id="Capacité" name="Capacité"  placeholder="Capacité" required>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="paireO">Paire Occupé</label>
+                                          <input type="text" class="form-control" id="paireO" name="paireO"  placeholder="Paire Occupé" required>
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="paireL">Paire Libre</label>
+                                          <input type="text" class="form-control" id="paireL" name="paireL"  placeholder="Paire Occupé" required>
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success">Ajouter</button>
+                                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
                                   </div>
                               </div>
                           </div>
