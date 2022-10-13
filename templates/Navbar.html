@@ -111,8 +111,12 @@
           <li class="nav-item nav-profile">
             <div class="nav-link">
               <div class="profile-image">
-                <img src="../static/images/faces/user.png" alt="image"/>
                 <span class="online-status online"></span> <!--change class online to offline or busy as needed-->
+                <a href="/profile/{{session['id']}}">
+                  <img src="../static/images/faces/user.png" alt="image"/>
+                </a>
+                
+                
               </div>
               <div class="profile-name">
                 <p class="name">
@@ -152,7 +156,7 @@
           </li>
               
           <li class="nav-item">
-            <a class="nav-link" href="{{url_for('users')}}">
+            <a class="nav-link" href="{{url_for('addUsers')}}">
               <i class="icon-picture menu-icon"></i>
               <span class="menu-title">Utilisateur</span>
             </a>

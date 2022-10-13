@@ -231,10 +231,10 @@
                               <td> {{ data.5 }} </td>
                               
                               <td> 
-                                  <a href="/edit_cel/{{data.0}}" data-toggle="modal" data-target="#editDOC">
+                                  <a href="" data-toggle="modal" data-target="#editDOC{{data.0}}">
                                       <i class="icon-cursor-move text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"></i>
                                   </a>
-                                  <a href="/delete_cel/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
+                                  <a href="/delete_doc/{{data[0]}}" onclick="return confirm('Are You Sure For Delete?')">
                                       <i style="margin-left : 6px" class="icon-trash text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"></i>
                                   </a>
                               </td>
@@ -250,7 +250,7 @@
                                       </button>
                                   </div>
                                   <div class="modal-body">
-                                      <form action="{{ url_for('documentationEdit', doc_id=data.0) }}" method="POST">
+                                      <form action="{{ url_for('docMobile') }}" method="POST">
                                         <div class="form-group">
                                             <label for="Site_id" class="col-form-label">Site_id</label>
                                             <input value="{{data.3}}" id="Site_id" name="Site_id" type="text" class="form-control" readonly/>
@@ -298,6 +298,61 @@
                                   </div>
                               </div>
                           </div>
+
+                          <div class="modal fade" id="editDOC{{data.0}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalLabel">Modifier Documentation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ url_for('editDoc', doc_id=data.0) }}" method="POST">
+                                      <div class="form-group">
+                                          <label for="Site_id" class="col-form-label">Site_id</label>
+                                          <input value="{{data.3}}" id="Site_id" name="Site_id" type="text" class="form-control" readonly/>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="rg_id" class="col-form-label">Delegation</label>
+                                        <select id="Delegation" name="Delegation" class="form-control">
+                                            <option value="{{data.2}}">{{data.2}}</option>
+                                            {% for i in listDelegation %}
+                                                <option value="{{i[2]}}"> {{i[2]}} </option>
+                                            {% endfor %}
+                                            </select>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="rg_id" class="col-form-label">Region</label>
+                                        <select id="Region" name="Region" class="form-control">
+                                            <option value="{{data.1}}">{{data.1}}</option>
+                                            {% for i in Region %}
+                                                <option value="{{i[1]}}"> {{i[1]}} </option>
+                                            {% endfor %}
+                                            </select>
+                                      </div>
+                                      <div class="form-group">
+                                          <label for="type" class="col-form-label">Type Documentation</label>
+                                          <select id="type" name="type" class="form-control">
+                                            <option value="{{data.4}}"> {{data.4}} </option>
+                                            <option value="type1">type1</option>
+                                            <option value="type2">type2</option>
+                                            <option value="type2">type3</option>
+                                            <option value="type4">type4</option>
+                                          </select>
+                                      </div>
+                                      
+                                        
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">Modifier</button>
+                                    <button type="button" class="btn btn-light" data-dismiss="modal">Quiter</button>
+                                </div>
+                            </form>
+                                </div>
+                            </div>
+                        </div>
                           {% endfor %}
                       
                       </tbody>

@@ -79,11 +79,79 @@ def configMobile():
 
 
 ### ajouter utilisateur
-@app.route('/users')
+@app.route('/user', methods=['GET','POST'])
 @login_required
-def users():
-    return render_template("js-grid.html")
+def addUsers():
+    if request.method == 'POST':
+        nom = request.form['nom']
+        prenom = request.form['prenom']
+        email = request.form['email']
+        password = request.form['password']
+        role = request.form['role']
+        
+        cursor.execute("SELECT email FROM admin WHERE nom=%s",(email,))
+        name = cursor.fetchone()
 
+        if  nom == "" or prenom == "" or  email == "" or role == "" or password == "" :
+            flash("Vérifier les champs obligatoire")
+        elif name:
+            flash("nom de l'utilisateur existe déja")  
+
+        else:
+            cursor.execute("INSERT INTO admin(nom, prenom, email, password, role) VALUES (%s,%s,%s,%s,%s)",(nom, prenom, email, password, role))
+        
+            connection.commit()
+
+        return redirect(url_for('ListUsers'))    
+
+
+### ajouter utilisateur
+@app.route('/edit_user/<string:user_id>', methods=['GET','POST'])
+@login_required
+def editUsers(user_id):
+    if request.method == 'POST':
+        nom = request.form['nom']
+        prenom = request.form['prenom']
+        email = request.form['email']
+        password = request.form['password']
+        role = request.form['role']
+        
+        cursor.execute("SELECT email FROM admin WHERE nom=%s",(email,))
+        name = cursor.fetchone()
+
+        if  nom == "" or prenom == "" or  email == "" or role == "" or password == "" :
+            flash("Vérifier les champs obligatoire")
+        elif name:
+            flash("nom de l'utilisateur existe déja")  
+
+        else:
+            cursor.execute("UPDATE admin SET nom=%s, prenom=%s, email=%s, password=%s, role=%s WHERE id=%s",(nom, prenom, email, password, role, user_id,))
+        
+            connection.commit()
+            return redirect(url_for('ListUsers')) 
+        return render_template("GereUsers.html", user_id = user_id)
+
+        
+
+## Delete User
+@app.route('/delete_user/<string:user_id>', methods=['GET','POST'])
+@login_required
+def deleteUser(user_id):
+
+    cursor.execute("DELETE FROM admin WHERE id=%s", (user_id,))
+    connection.commit()
+    
+    return redirect(url_for('ListUsers'))        
+    
+
+### ajouter utilisateur
+@app.route('/users', methods=['GET','POST'])
+@login_required
+def ListUsers():
+    cursor.execute("SELECT * FROM admin")
+    listeUsers = cursor.fetchall()
+
+    return render_template("GereUsers.html", users = listeUsers)
 
 ### generale Acces Mobile
 @app.route('/details_mobile', methods=['GET','POST'])
@@ -170,7 +238,7 @@ def siteDetail(site_id):
     return render_template("DetailSite.html",cellule=cellule, doc=doc, visite=visite, intervention=intervention, Region=Region, listDelegation=listDelegation) 
 
 
-## Detail Documentation
+''' ## Detail Documentation
 @app.route('/edit_doc/<int:doc_id>', methods=['GET','POST'])
 @login_required
 def documentationEdit(doc_id):
@@ -188,7 +256,7 @@ def documentationEdit(doc_id):
         doc = docCursor.fetchall()
         
         return render_template("DetailSite.html", doc_id=doc_id, doc=doc, Region=Region, listDelegation=listDelegation) 
-    return redirect(url_for('detail_site',doc_id=doc_id))
+    return redirect(url_for('detail_site',doc_id=doc_id)) '''
 
 ## Detail Intervention
 @app.route('/detail_int/<int:site_id>', methods=['GET','POST'])
@@ -371,20 +439,61 @@ def deleteCellule(cel_id):
 def docMobile():
 
     if request.method == "POST":
+        site_id = request.form['Site_id']
         region = request.form['Region']
-        Delegation = request.form['Délegation']
-        site_name = request.form['Site_Name']
-        typeDoc = request.form['Documentation']
-        Doc = request.form['formFile']
+        Delegation = request.form['Delegation']       
+        typeDoc = request.form['type']
+        Doc = request.form['documentation']
         
-        if  site_name == "Select site_Name" or Delegation == "Select Delegation" or region == "Select Region" or Doc == "":
+        if  Delegation == "Select Delegation" or region == "Select Region" or Doc == "":
             flash("Vérifier les champs obligatoire")
         else:
-            cursor.execute("INSERT INTO document_mobile (region, delegation, site_name, type_d, documentation) VALUES (%s,%s,%s,%s,%s)", (region, Delegation, site_name, typeDoc, Doc) )
+            cursor.execute("INSERT INTO document_mobile (region, delegation, site_id, type_d, documentation) VALUES (%s,%s,%s,%s,%s)", (region, Delegation, site_id, typeDoc, Doc) )
             connection.commit()
-            cursor.close()
+         
+            return redirect(url_for('generaleMobile'))
 
     return render_template("DocMobile.html", Region=Region, sitename=sitename, listDelegation=listDelegation)
+
+
+## Delete documentation
+@app.route('/delete_doc/<string:doc_id>', methods=['GET','POST'])
+@login_required
+def deleteDoc(doc_id):
+    
+    cursor.execute("DELETE FROM document_mobile WHERE id_d=%s", (doc_id,))
+    connection.commit()
+    
+    return redirect(url_for('generaleMobile'))
+
+
+### edit documentation
+@app.route('/edit_doc/<string:doc_id>', methods=['GET','POST'])
+@login_required
+def editDoc(doc_id):
+
+    if request.method == "POST":
+        site_id = request.form['Site_id']
+        region = request.form['Region']
+        Delegation = request.form['Delegation']       
+        typeDoc = request.form['type']
+        
+        
+        if  region == "" or Delegation == "" or  typeDoc == "":
+            flash("Vérifier les champs obligatoire")
+        
+
+        else:
+       
+            cursor.execute("""
+                UPDATE document_mobile SET region=%s, delegation=%s, type_d=%s WHERE id_d=%s
+                """,(region, Delegation, typeDoc, doc_id))
+            
+            return redirect(url_for('generaleMobile'))
+
+        return render_template("DocMobile.html", Region=Region, sitename=sitename, listDelegation=listDelegation, doc_id=doc_id)
+
+
 
 ### visite guidé
 @app.route('/visite-guidé', methods=['GET','POST'])
